@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://malsup.github.com/jquery.form.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Similar jobs</title>
+</head>
+<body>
+<script>
+    $.ajaxSetup({
+        contentType: "application/json; charset=utf-8"
+    });
+
+    function displayLocationJobs() {
+        console.log("retrying");
+        $.get("/api?name=utkarsh", function (data, status) {
+            console.log(JSON.stringify(data));
+            console.log('status ' + status);
+
+            $("#name_data").html(JSON.stringify(data));
+        });
+    }
+
+    displayLocationJobs();
+</script>
+<p id="name_data">
+    Please wait, content loading...
+</p>
+</body>
+</html>
