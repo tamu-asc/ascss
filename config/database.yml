@@ -22,6 +22,9 @@ test:
 
 production:
   adapter: postgresql
-  database: db_ascss
+  encoding: unicode
+  database: ascss_production
+  username: ascss
+  password: <%= ENV['MYAPP_DATABASE_PASSWORD'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
