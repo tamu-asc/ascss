@@ -25,4 +25,6 @@ Things you may want to cover:
 
 To run the application on heroku, we need an environment variable in the heroku application which is the secret key used for the encryption. That file should never be checked in into the github.
 The command to do that is 
+```bash
 heroku config:set RAILS_MASTER_KEY=`cat config/master.key`
+```
