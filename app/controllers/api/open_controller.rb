@@ -1,6 +1,8 @@
 # this controller is open, doesn't require the request to be authenticated
 
 class Api::OpenController < Api::ApplicationController
+  include UsersHelper
+
   # this method will be used for logging in
   def create_session
     user_params = params[:user]
