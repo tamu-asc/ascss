@@ -21,6 +21,9 @@ module Ascss
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
+    config.action_controller.perform_caching = false
+    config.perform_caching = false
+    config.cache_store = :null_store
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -36,5 +39,7 @@ module Ascss
     config.middleware.delete Rack::ConditionalGet
     config.middleware.delete Rack::Sendfile
     config.middleware.delete Rack::Runtime
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: 'ascss'
   end
 end
