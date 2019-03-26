@@ -13,3 +13,38 @@ The command to do that is
 ```bash
 heroku config:set RAILS_MASTER_KEY=`cat config/master.key`
 ```
+
+
+# Rails model generation commands
+```bash
+rails g model User username:uniq password:digest
+```
+ 
+```bash
+rails g migration AddNewFieldsToUsers role:integer email:uniq first_name:string last_name:string
+```
+
+```bash
+bin/rails g model Course title:string semester:integer year:integer credits:integer code:string
+```
+
+```bash
+bin/rails g model Section title:string course:references
+```
+ 
+```bash
+bin/rails g model CourseStudent username:string user:references course:references
+```
+
+```bash
+bin/rails g model CourseInstructor username:string user:references course:references
+```
+
+```bash
+bin/rails g model Session name:string course_instructor:references start_time:datetime end_time:datetime address:text description:text
+```
+
+```bash
+bin/rails g model SessionAttendance session:references student_course:references in_time:datetime
+```
+
