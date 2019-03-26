@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  session: one
+  student_course: one
+  in_time: 2019-03-26 18:19:42
+
+two:
+  session: two
+  student_course: two
+  in_time: 2019-03-26 18:19:42
