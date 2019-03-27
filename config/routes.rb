@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     match "/login" => "open#create_session", via: :post
     match "/logout" => "sessions#destroy", via: [:post, :get]
     match "/user" => "users#show", via: :get
+    match "/user" => "users#update", via: [:put, :patch]
   end
 # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
