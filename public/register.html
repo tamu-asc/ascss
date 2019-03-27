@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-        <link rel="stylesheet" href="./bootstrap.css">
-        <script src="./jquery.min.js"> </script>
-        <script src = "./login.css"></script>
-        <script src="./bootstrap.min.js"></script>
-        <script src = "./popper.min.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <script src="./js/jquery.min.js"> </script>
+    <script src="./css/login.css"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/popper.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="Access-Control-Allow-Origin" content="*" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -14,77 +15,94 @@
     <meta charset="UTF-8">
     <title>Similar jobs</title>
 </head>
+
 <body>
-<script>
-    $.ajaxSetup({
-        contentType: "application/json; charset=utf-8"
-    });
-
-    function displayLocationJobs() {
-        console.log("retrying");
-        $.get("/api?name=utkarsh", function (data, status) {
-            console.log(JSON.stringify(data));
-            console.log('status ' + status);
-
-            $("#name_data").html(JSON.stringify(data));
+    <script>
+        $.ajaxSetup({
+            contentType: "application/json; charset=utf-8"
         });
-    }
 
-    displayLocationJobs();
-</script>
- <div class="container">
+        $(document).ready(function () {
+
+            $("#register").click(function () {
+
+                console.log("asd'asdas");
+                var obj = {
+                    "user": {
+                        "first_name": $("#f_name").val(),
+                        "last_name": $("#l_name").val(),
+                        "email": $("#email").val(),
+                        "password": $("#password").val(),
+                        "password_confirmation": $("#c_password").val()
+                    }
+                }
+
+                console.log("asdasassa", obj);
+                $.post("/api/signup",
+                    obj,
+                    function (data) {
+                        alert("Data: " + data);
+                    });
+
+
+            });
+        });
+
+    </script>
+    <div class="container">
         <div class="row">
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-              <div class="card-body">
-                <h5 class="card-title text-center">Register</h5>
-                <form class="form-signin">
-                  
-    
-                  <div class="form-label-group">
-                    <input  id="f_name" class="form-control" placeholder="First Name" required>
-                    <label for="first_name"> </label>
-                  </div>
-
-                  
-                  <div class="form-label-group">
-                        <input  id="l_name" class="form-control" placeholder="Last Name" required>
-                        <label for="last_name"> </label>
-                      </div>
-
-                      
-                  <div class="form-label-group">
-                        <input  id="email" class="form-control" placeholder="Email" required>
-                        <label for="email"></label>
-                      </div>
-
-                      
-                  <div class="form-label-group">
-                        <input  id="password" class="form-control" placeholder="Password" required>
-                        <label for="input_Password"></label>
-                      </div>
-                      
-                      
-                  <div class="form-label-group">
-                        <input  id="c_password" class="form-control" placeholder="Confirm Password" required>
-                        <label for="c_password"> </label>
-                      </div>
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Register</h5>
+                        <form class="form-signin">
 
 
+                            <div class="form-label-group">
+                                <input id="f_name" class="form-control" placeholder="First Name" required>
+                                <label for="first_name"> </label>
+                            </div>
 
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
-                  <div class="text-center"> <a href="./index"> Already have an account? Login!</a></div>
 
-                  <hr class="my-4">
-                  <!-- <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button> -->
-                  <!-- <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button> -->
-                </form>
-              </div>
+                            <div class="form-label-group">
+                                <input id="l_name" class="form-control" placeholder="Last Name" required>
+                                <label for="last_name"> </label>
+                            </div>
+
+
+                            <div class="form-label-group">
+                                <input id="email" class="form-control" placeholder="Email" required>
+                                <label for="email"></label>
+                            </div>
+
+
+                            <div class="form-label-group">
+                                <input id="password" class="form-control" placeholder="Password" required>
+                                <label for="input_Password"></label>
+                            </div>
+
+
+                            <div class="form-label-group">
+                                <input id="c_password" class="form-control" placeholder="Confirm Password" required>
+                                <label for="c_password"> </label>
+                            </div>
+
+
+
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase"
+                                id="register">Register</button>
+                            <div class="text-center"> <a href="./index"> Already have an account? Login!</a></div>
+
+                            <hr class="my-4">
+                            <!-- <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button> -->
+                            <!-- <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button> -->
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-<!-- <div class="container" >
+    </div>
+    <!-- <div class="container" >
 <button class="btn-primary">khkjh</button>
 
 </div>

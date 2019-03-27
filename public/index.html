@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <link rel="stylesheet" href="./bootstrap.css">
-        <script src="./jquery.min.js"> </script>
-        <script src = "./login.css"></script>
-        <script src="./bootstrap.min.js"></script>
-        <script src = "./popper.min.js"></script>
+        <link rel="stylesheet" href="./css/bootstrap.css">
+        <script src="./js/jquery.min.js"> </script>
+        <script src = "./css/login.css"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src = "./js/popper.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="Access-Control-Allow-Origin" content="*" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -15,23 +15,7 @@
     <title>Similar jobs</title>
 </head>
 <body>
-<script>
-    $.ajaxSetup({
-        contentType: "application/json; charset=utf-8"
-    });
 
-    function displayLocationJobs() {
-        console.log("retrying");
-        $.get("/api?name=utkarsh", function (data, status) {
-            console.log(JSON.stringify(data));
-            console.log('status ' + status);
-
-            $("#name_data").html(JSON.stringify(data));
-        });
-    }
-
-    displayLocationJobs();
-</script>
  <div class="container">
         <div class="row">
           <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
