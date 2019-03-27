@@ -10,7 +10,7 @@ class Api::OpenController < Api::ApplicationController
       @msg = "Login details not found"
       render "objects/msg.json", status: :unauthorized and return
     end
-    @user = User.find_by_username(user_params[:username])
+    @user = User.find_by_email(user_params[:email])
     if @user && @user.authenticate(user_params[:password])
       session[:user_id] = @user.id
       render 'objects/user.json'
@@ -23,6 +23,7 @@ class Api::OpenController < Api::ApplicationController
   # this method is used for signing up
   def create_user
     @user = User.new(user_params)
+    @user.role = :user
     if @user.save
       render 'objects/user.json'
     else
