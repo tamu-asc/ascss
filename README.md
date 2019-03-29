@@ -1,4 +1,8 @@
-# README
+# Documentation repo
+
+Find the documentations and/or submissions [here](https://github.com/tamu-asc/documentations)
+
+# Code related information
 
 ## System Requirements
 
