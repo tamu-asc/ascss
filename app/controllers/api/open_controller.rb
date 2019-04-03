@@ -5,13 +5,13 @@ class Api::OpenController < Api::ApplicationController
 
   # this method will be used for logging in
   def create_session
-    user_params = params[:user]
-    unless user_params
+    req_params = params[:user]
+    unless req_params
       @msg = "Login details not found"
       render "objects/msg.json", status: :unauthorized and return
     end
-    @user = User.find_by_email(user_params[:email])
-    if @user && @user.authenticate(user_params[:password])
+    @user = User.find_by_email(req_params[:email])
+    if @user && @user.authenticate(req_params[:password])
       session[:user_id] = @user.id
       render 'objects/user.json'
     else
