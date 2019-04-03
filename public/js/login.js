@@ -15,7 +15,7 @@ $(document).ready(function () {
         };
 
         $.post("/api/login", JSON.stringify(loginCreds), function (data) {
-            alert("Data: " + JSON.stringify(data));
+            window.location.assign('/home')
         });
     });
 });
