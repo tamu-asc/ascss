@@ -5,7 +5,7 @@ class Api::Admin::OpenController < Api::ApplicationController
   def create_token
     @user = User.find_by_email(params[:email])
     if @user && @user.authenticate(params[:password]) && @user.role.to_s == "admin"
-      @token = issue_token({user: @user.id})
+      @token = issue_token({user: @user.id, issued: Time.now.to_i})
       render json: {token: @token}
     else
       @msg = "Email or password is invalid"

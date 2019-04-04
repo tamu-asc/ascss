@@ -20,6 +20,13 @@ class Api::Admin::AuthController < Api::ApplicationController
       jwt_token = token
       puts jwt_token
       payload = decode(jwt_token)
+
+      issued_time = payload["issued"]
+      if issued_time == nil# || Time.now - issued_time >= 600
+        @msg = "error authenticating token "
+        @details = "Token expired, please issue a new one"
+        render "objects/msg.json", status: :unauthorized and return
+      end
       user_id = payload["user"]
       @user = User.find(user_id)
       unless @user && @user.role.to_s == "admin"
