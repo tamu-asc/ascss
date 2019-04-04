@@ -31,6 +31,63 @@
     }
   ],
   "paths": {
+    "/create": {
+      "post": {
+        "summary": "Create the admin object",
+        "requestBody": {
+          "description": "This will work only for the first time when you need to create the admin object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "First Name"
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "Last Name"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "A unique user name, preferably UIN"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email id of admin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Email id of admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "description": "The created user object"
+                    }
+                  }
+                }
+              }
+            }
+
+          }
+        }
+      }
+    },
     "/authenticate": {
       "post": {
         "summary": "Get the security token",
