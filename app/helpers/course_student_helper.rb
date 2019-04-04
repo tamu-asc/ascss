@@ -1,5 +1,17 @@
 module CourseStudentHelper
 
+  def show_course_student
+    @course_students = CourseStudent.where user: @user
+    if @course_students
+      render "objects/course_student"
+    else
+      @msg = "Error in generating object"
+      @details = "courses for the user not found"
+      render "objects/msg.json", status: :bad_request and return
+    end
+
+  end
+
   def create_entry(course, username)
     course_student = CourseStudent.find_by course: course, username: username
     if course_student

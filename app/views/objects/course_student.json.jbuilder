@@ -1,5 +1,9 @@
 def course_student_format(json, course_student)
   json.id course_student.id
+  json.title course_student.course.title
+  json.semester course_student.course.semester
+  json.year course_student.course.year
+  json.credits course_student.course.credits
   json.course_id course_student.course.id
   json.username course_student.username
 
