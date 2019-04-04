@@ -2,7 +2,13 @@ def course_student_format(json, course_student)
   json.id course_student.id
   json.course_id course_student.course.id
   json.username course_student.username
-  json.user_id course_student.user.id
+
+  user_id = nil
+  unless course_student.user.blank?
+    user_id = course_student.user.id
+  end
+
+  json.user_id user_id
 end
 
 if @course_student != nil

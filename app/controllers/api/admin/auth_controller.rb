@@ -4,7 +4,11 @@ class Api::Admin::AuthController < Api::ApplicationController
   before_action :authenticate_admin
 
   def token
+    begin
     request.headers["Authorization"].scan(/Bearer (.*)$/).flatten.last
+    rescue Exception => e
+      nil
+    end
   end
 
   # def auth_present?
@@ -22,7 +26,8 @@ class Api::Admin::AuthController < Api::ApplicationController
       payload = decode(jwt_token)
 
       issued_time = payload["issued"]
-      if issued_time == nil# || Time.now - issued_time >= 600
+      # todo: remove this comment
+      if issued_time == nil# || Time.now.to_i - issued_time >= 600
         @msg = "error authenticating token "
         @details = "Token expired, please issue a new one"
         render "objects/msg.json", status: :unauthorized and return

@@ -150,6 +150,44 @@
             "$ref": "#/components/responses/UnauthorizedError"
           }
         }
+      },
+    },
+    "/course/student/{courseId}": {
+      "get": {
+        "summary": "Get course enrolled students",
+        "description": "Get all the student enrolled in this course",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all students.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
       }
     }
   }

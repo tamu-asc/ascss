@@ -31,4 +31,10 @@ module CourseStudentHelper
       record.save
     end
   end
+
+  def mask_entry(course_student, user)
+    if course_student.user == user
+      course_student.user = nil
+    end
+  end
 end

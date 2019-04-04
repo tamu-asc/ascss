@@ -10,8 +10,9 @@ Rails.application.routes.draw do
       match "/course" => "course#index", via: :get
       match "/course/:id" => "course#update", via: [:put, :patch]
       match "/course/:id" => "course#show", via: :get
-      match "/enroll/student" => "course_student#create", via: :post
-      match "/enroll/student_bulk" => "course_student#create_bulk", via: :post
+      match "/course/student" => "course_student#create", via: :post
+      match "/course/student_bulk" => "course_student#create_bulk", via: :post
+      match "/course/student/:course" => "course_student#index", via: :get
     end
 
     root 'application#index'
