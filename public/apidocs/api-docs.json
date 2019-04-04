@@ -42,25 +42,32 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "first_name": {
-                    "type": "string",
-                    "description": "First Name"
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "Last Name"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "A unique user name, preferably UIN"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Email id of admin"
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "Email id of admin"
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "properties": {
+                        "first_name": {
+                          "type": "string",
+                          "description": "First Name"
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "description": "Last Name"
+                        },
+                        "username": {
+                          "type": "string",
+                          "description": "A unique user name, preferably UIN"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "Email id of admin"
+                        },
+                        "password": {
+                          "type": "string",
+                          "description": "Password of the admin"
+                        }
+                      }
+                    }
                   }
                 }
               }
