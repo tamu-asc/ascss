@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     match "/user" => "users#show", via: :get
     match "/user" => "users#update", via: [:put, :patch]
     match "/course/:id" => "course#show", via: :get
+    match "/course_student" => "course_student#show", via: :get
   end
 # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
