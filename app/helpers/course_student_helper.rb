@@ -1,8 +1,8 @@
 module CourseStudentHelper
 
   def show_course_student
-    @course_student = CourseStudent.find_by user: @user
-    if @course_student
+    @course_students = CourseStudent.where user: @user
+    if @course_students
       render "objects/course_student"
     else
       @msg = "Error in generating object"
