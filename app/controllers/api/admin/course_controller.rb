@@ -1,6 +1,11 @@
 class Api::Admin::CourseController < Api::Admin::AuthController
   include CoursesHelper
 
+  def index
+    @courses = Course.all
+    render 'objects/course.json'
+  end
+
   def create
     @course = Course.new(course_params)
     if @course.save

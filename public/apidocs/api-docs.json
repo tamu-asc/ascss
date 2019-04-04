@@ -1,0 +1,94 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Swagger Admin App",
+    "description": "Use this to do the swagger ui for admin",
+    "contact": "utkarshc@tamu.edu",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "/api/admin",
+      "description": "The swag swagger for admin"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Unauthorized, refresh the token"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/authenticate": {
+      "post": {
+        "summary": "Get the security token",
+        "requestBody": {
+          "description": "Add the username and password here",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email id of admin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Email id of admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Copy the token and paste it in the authorization section for subsequent requests"
+                    }
+                  }
+                }
+              }
+            }
+
+          }
+        }
+      }
+    },
+    "/course": {
+      "get": {
+        "summary": "Get courses",
+        "description": "Get all courses",
+        "responses": {
+          "200": {
+            "description": "A list of courses."
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    }
+  }
+}

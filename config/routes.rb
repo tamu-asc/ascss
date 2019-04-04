@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   root :to => redirect('/index.html')
   namespace :api do
     namespace :admin do
+      root :to => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
       match "/create" => "open#create_admin", via: :post
       match "/authenticate" => "open#create_token", via: :post
       match "/test" => "auth#get_user", via: :get
       match "/course" => "course#create", via: :post
+      match "/course" => "course#index", via: :get
       match "/course/:id" => "course#update", via: [:put, :patch]
       match "/course/:id" => "course#show", via: :get
       match "/enroll/student" => "course_student#create", via: :post
