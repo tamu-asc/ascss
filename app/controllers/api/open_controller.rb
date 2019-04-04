@@ -2,6 +2,7 @@
 
 class Api::OpenController < Api::ApplicationController
   include UsersHelper
+  include CourseStudentHelper
 
   # this method will be used for logging in
   def create_session
@@ -25,6 +26,7 @@ class Api::OpenController < Api::ApplicationController
     @user = User.new(user_params)
     @user.role = :user
     if @user.save
+      correct_entries @user
       render 'objects/user.json'
     else
       @msg = "Error in generating user"
