@@ -36,7 +36,7 @@ module CourseStudentHelper
 
   end
 
-  def correct_entries(user)
+  def correct_cs_entries(user)
     records = CourseStudent.where username: user.username
     records.each do |record|
       record.user = user

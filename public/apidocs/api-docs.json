@@ -138,7 +138,7 @@
         }
       }
     },
-    "/course": {
+    "/courses": {
       "get": {
         "summary": "Get courses",
         "description": "Get all courses",
@@ -150,9 +150,9 @@
             "$ref": "#/components/responses/UnauthorizedError"
           }
         }
-      },
+      }
     },
-    "/course/student/{courseId}": {
+    "/course/{courseId}/students": {
       "get": {
         "summary": "Get course enrolled students",
         "description": "Get all the student enrolled in this course",

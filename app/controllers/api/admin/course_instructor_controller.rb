@@ -1,5 +1,5 @@
-class Api::Admin::CourseStudentController < Api::Admin::AuthController
-  include CourseStudentHelper
+class Api::Admin::CourseInstructorController < Api::Admin::AuthController
+  include CourseInstructorHelper
 
   def create
     course = Course.find_by_id(params[:course])
@@ -10,9 +10,9 @@ class Api::Admin::CourseStudentController < Api::Admin::AuthController
     end
     username = params[:user][:username]
 
-    @course_student = create_entry course, username
-    if @course_student
-      render 'objects/course_student.json'
+    @course_instructor = create_entry course, username
+    if @course_instructor
+      render 'objects/course_instructor.json'
     else
       @msg = "Error in generating object"
       @details = "check logs"
@@ -27,11 +27,11 @@ class Api::Admin::CourseStudentController < Api::Admin::AuthController
       @details = "course not found"
       render "objects/msg.json", status: :bad_request and return
     end
-    @course_students = params[:users].map do |user|
+    @course_instructors = params[:users].map do |user|
       create_entry course, user[:usernames]
     end
-    if @course_students
-      render 'objects/course_student.json'
+    if @course_instructors
+      render 'objects/course_instructor.json'
     else
       @msg = "Error in generating object"
       @details = "check logs"
@@ -47,20 +47,20 @@ class Api::Admin::CourseStudentController < Api::Admin::AuthController
       render "objects/msg.json", status: :bad_request and return
     end
 
-    @course_students = CourseStudent.where(course: course)
+    @course_instructors = CourseInstructor.where(course: course)
 
-    @course_students.each do |each_elem| each_elem
-      mask_entry each_elem, @user
+    @course_instructors.each do |each_elem| each_elem
+    mask_entry each_elem, @user
     end
 
     accept = request.headers["Accept"]
     if accept == "text/csv"
-      csv_data = CourseStudent.to_csv @course_students
+      csv_data = CourseInstructor.to_csv @course_instructors
       filename = course.code + "_" + Time.now.to_i.to_s + ".csv"
       send_data csv_data, :type => 'text/csv; charset=utf-8; header=present', :filename => filename
     else
       @raw = true
-      render 'objects/course_student.json'
+      render 'objects/course_instructor.json'
     end
   end
 end
