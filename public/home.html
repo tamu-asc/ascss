@@ -5,9 +5,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/css/mdb.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="application/javascript" src="https://malsup.github.com/jquery.form.js"></script>
-<script type="application/javascript" src="./js/bootstrap.min.js"></script>
-<script type="application/javascript" src="./js/login.js"></script>
+<script type="application/javascript" src="js/bootstrap.min.js"></script>
+<script type="application/javascript" src="js/login.js"></script>
+<script type="text/javascript" src="js/coursetable.js"></script>
 
+<head>    
 <meta charset="UTF-8">
 </head>
 <body>
@@ -45,4 +47,38 @@
         </div>
     </nav>
 
+<div id="coursecont" class="container">  
+    <button type="button" class="btn btn-dark btn-lg btn-block">Registered Courses</button>   
+    <div class="accordion" id="Studentcoursesection">
+        <div class="card">
+            <div class="card-header" id="StudentCourseheading1">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="false" aria-controls="stdcollapseOne">View Courses</button>
+                </h5>
+            </div>
+
+            <div id="stdcollapseOne" class="collapse" aria-labelledby="StudentCourseheading1" data-parent="#Studentcoursesection">
+                <div class="card-body">    
+                    <table id="CourseTable" class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Semester</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Credits</th>
+                            <th scope="col">Sessions</th>    
+                            </tr>
+                        </thead>
+                        <tbody id="CoursesBody"></tbody>
+                    </table>        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 </body>
+</html>
