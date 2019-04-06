@@ -9,7 +9,7 @@ $(document).ready(function() {
         $(data.courses).each(function(i,course){
             $('#CoursesBody').append($("<tr>")
                 .append($("<th>").append(course.id))
-                .append($("<td>").append("CSE606"))
+                .append($("<td>").append(course.code))
                 .append($("<td>").append(course.title))
                 .append($("<td>").append(course.semester))
                 .append($("<td>").append(course.year))
