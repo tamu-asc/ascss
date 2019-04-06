@@ -5,8 +5,8 @@ $(document).ready(function() {
     else {
     $.getJSON('api/student/courses',
     function(data,message){
+        if(data.courses.length>=1) {
         $(data.courses).each(function(i,course){
-            console.log(course)
             $('#CoursesBody').append($("<tr>")
                 .append($("<th>").append(course.id))
                 .append($("<td>").append("CSE606"))
@@ -16,6 +16,11 @@ $(document).ready(function() {
                 .append($("<td>").append(course.credits))
                 .append($('<td><a class="btn btn-primary btn-sm" href="#" role="button">View</a>')));
         });
+    } else {
+        $('#CoursesTable').hide();
+        $('.table-customise').append($("<div class='text-center'> NO COURSES TO VIEW </div>"))
+
+    }
     },function(err) {
         alert(err);
     })         
