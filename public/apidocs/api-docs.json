@@ -189,6 +189,293 @@
           }
         }
       }
+    },
+    "/course": {
+      "post":{
+        "summary": "Create new course for student",
+        "requestBody": {
+          "description": "Create new course",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type" : "object",
+                "properties" :{
+                  "title": {
+                    "type" : "string",
+                    "description" : "title of course"
+                    },
+                  "semester": {
+					"type": "string",
+					"description": "course semester"
+				  },
+                  "year" : {
+					"type": "int",
+					"description" : "year"
+				  },
+                  "credit" : {
+					"type": "int",
+					"description" : "no. of credits"
+				  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes flag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "result" : "OK"
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/course/{id}": {
+      "patch":{
+        "summary": "Update course for student",
+        "requestBody": {
+          "description": "Update course",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+				"type" : "object",
+				"properties": {
+                "title": {
+                    "type" : "string",
+                    "description" : "title of course"
+                    },
+                  "semester": {
+					"type": "string",
+					"description": "course semester"
+				  },
+                  "year" : {
+					"type": "int",
+					"description" : "year"
+				  },
+                  "credit" : {
+					"type": "int",
+					"description" : "no. of credits"
+				  }
+				}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success flag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "result" : "OK"
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/course/{courseId}/student": {
+      "post":{
+        "summary": "Create new course for student",
+        "requestBody": {
+          "description": "Create new course",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+				"type": "object",
+				"properties": {
+                "user": {
+                  "type": "string",
+				  "description": "unique username"
+                }
+				}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes flag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "result" : "OK"
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/course/{courseId}/student_bulk": {
+      "post":{
+        "summary": "Create new course for student",
+        "requestBody": {
+          "description": "Create new course",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+				"type": "object",
+				"properties" : {
+                "users": [
+                  {
+                    "type": "string",
+					"description": "unique username"
+                  },
+                  {
+                    "type": "string",
+					"description": "unique username"
+                  },
+                  {
+                    "type": "string",
+					"description": "unique username"
+                  }
+                ]
+              }
+			  }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes flag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "result" : "OK"
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/course/{courseId}/leader_bulk": {
+      "post":{
+        "summary": "Create new course for student",
+        "requestBody": {
+          "description": "Create new course",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+				"type": "object",
+				"properties": {
+                "users": [
+                  {
+                    "type": "string",
+					"description": "unique usernames"
+                  },
+                  {
+                    "type": "string",
+					"description": "unique usernames"
+                  },
+                  {
+                    "type": "string",
+					"description": "unique usernames"
+                  }
+                ]
+              }
+			  }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes flag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "result" : "OK"
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/course/{courseId}/leader": {
+      "post":{
+        "summary": "Create new course for student",
+        "requestBody": {
+          "description": "Create new course",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+				"type": "object",
+				"properties": {
+                "user": {
+                  "type":"string",
+				  "description": "unique username"
+                }
+              }
+			  }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes flag",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "result" : "OK"
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/course/{courseId}/leaders": {
+      "get": {
+        "summary": "Get course enrolled leaders",
+        "description": "Get all the leaders in this course",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all Leaders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
     }
   }
 }
+
