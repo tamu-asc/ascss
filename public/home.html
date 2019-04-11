@@ -7,7 +7,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="application/javascript" src="https://malsup.github.com/jquery.form.js"></script>
 <script type="application/javascript" src="js/bootstrap.min.js"></script>
-<script type="application/javascript" src="js/login.js"></script>
 <script type="text/javascript" src="js/coursetable.js"></script>
 
 
@@ -16,6 +15,7 @@
     padding: 15px;
 }
 </style>
+
 <head>    
 <meta charset="UTF-8">
 </head>
@@ -48,7 +48,7 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-info"
                         aria-labelledby="navbarDropdownMenuLink-4">
                         <a class="dropdown-item text-primary" href="#">My account</a>
-                        <a class="dropdown-item text-primary" href="#">Log out</a>
+                        <a class="dropdown-item text-primary" id="logout">Log out</a>
                     </div>
                 </li>
             </ul>
@@ -76,7 +76,7 @@
             </div>
 
             <div id="stdcollapseOne" class="collapse" aria-labelledby="StudentCourseheading1" data-parent="#Studentcoursesection">
-                <div class="card-body">    
+                <div class="card-body table-customise">    
                     <table id="CourseTable" class="table table-hover">
                         <thead>
                             <tr>
