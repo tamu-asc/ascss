@@ -52,12 +52,12 @@ ActiveRecord::Schema.define(version: 2019_04_16_222531) do
 
   create_table "session_attendances", force: :cascade do |t|
     t.integer "session_id"
-    t.integer "student_course_id"
+    t.integer "course_student_id"
     t.datetime "in_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_session_attendances_on_session_id"
-    t.index ["student_course_id"], name: "index_session_attendances_on_student_course_id"
+    t.index ["course_student_id"], name: "index_session_attendances_on_course_student_id"
   end
 
   create_table "sessions", force: :cascade do |t|
