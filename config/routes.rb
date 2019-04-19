@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     match "/leader/course/:course_id/sessions" => "course_session#show_by_instructor", via: :get
     match "/leader/course/:course_id/session" => "course_session#create_session", via: :post
     match "/leader/course/:course_id/session/:session_id" => "course_session#update", via: [:put, :patch]
+    match "/leader/course/:course_id/session/:session_id" => "course_session#show", via: :get
     match "/leader/course/:course_id/session/:session_id" => "course_session#delete", via: :delete
     match "/leader/course/:course_id/session/:session_id/end_session" => "course_session#end_session", via: :post
     match "/student/courses" => "course_student#show", via: :get
