@@ -1,7 +1,7 @@
 def course_session_format(json, course_session)
   json.id course_session.id
   json.name course_session.name
-  json.leader_id course_session.leader_id
+  json.leader_id course_session.course_instructor_id
   json.start_time course_session.start_time.to_i
   json.end_time course_session.end_time.to_i
   json.state course_session.state

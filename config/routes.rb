@@ -27,6 +27,10 @@ Rails.application.routes.draw do
     match '/user' => 'users#update', via: [:put, :patch]
     match '/course/:id' => 'course#show', via: :get
     match '/course/:id/sessions' => 'course_session#show', via: :get
+    match '/course/:id/session' => 'course_session#create', via: :post
+    match '/course/:id/session/:session_id' => 'course_session#update', via: [:put, :patch]
+    match '/course/:id/session/:session_id' => 'course_session#delete', via: :delete
+    match '/course/:id/session/:session_id/end_session' => 'course_session#end_session', via: :post
     match '/student/courses' => 'course_student#show', via: :get
     match '/instructor/courses' => 'course_instructor#show', via: :get
   end
