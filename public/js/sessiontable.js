@@ -31,31 +31,31 @@ $(document).ready(function() {
                 var coursename=getUrlParameter('coursename');
                 var sessionfilename="js/SISession" + courseid+".json";
                 
-                $.get('leader/course/'+courseid + '/sessions').then(function(data){
+                $.get('/api/leader/course/'+courseid + '/sessions').then(function(data){
                                 
                                 $('#coursetitle').append($('<h1>'+coursename+'</h1>'))
-                            $(data).each(function(i,sessionn){
+                            $(data.sessions).each(function(i,sessionn){
                         var $edit_object;
                         var $end_object;
                         var $session_name;
                                 
-                        $session_name='<td><button onclick="popfn(\''+sessionn.id+'\')" type="button" id="sessionbutton'+sessionn.id+'" class="btn btn-sm btn-dark">'+sessionn.name+'</button>';        
+                        $session_name='<td><button onclick="popfn(\''+sessionn.id+'\')" type="button" id="sessionbutton'+sessionn.id+'" class="btn btn-sm btn-dark">'+sessionn.name+'</button></td>';        
                                  
-                        if(sessionn.state=="present")
+                        if(sessionn.state=="active")
                         {
-                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button>';
-                        $end_object='<td><button id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button>';    
+                        $edit_object='<td><button disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
+                        $end_object='<td><button id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';    
                         }
                         
                         if(sessionn.state=="past")
                         {
-                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" disabled type="button">Edit</button>';
-                        $end_object='<td>';    
+                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" disabled type="button">Edit</button></td>';
+                        $end_object='<td><button disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';    
                         }
                         
                         if(sessionn.state=="future")
                         {
-                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button>';
+                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
                         $end_object='<td>';
                         }
                         
@@ -83,6 +83,7 @@ $(document).ready(function() {
             
                 }).fail(function(err) {
                     alert(err.statusCode)
+                    console.log(err)
                 })   
                   
                     
