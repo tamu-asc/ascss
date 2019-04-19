@@ -9,7 +9,7 @@ class Api::CourseSessionController < Api::AuthController
     show_course_session_instructor
   end
 
-  def create
+  def create_session
     create
   end
 
