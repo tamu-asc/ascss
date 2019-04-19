@@ -13,19 +13,19 @@ class Api::CourseSessionController < Api::AuthController
     show_course_session
   end
 
-  def create_session
-    create
+  def create
+    create_session
   end
 
   def update
-    update
+    update_session
   end
 
   def delete
-    delete
+    delete_session
   end
 
-  def end_session
+  def end
     end_session
   end
 

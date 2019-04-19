@@ -7,7 +7,7 @@ module CourseSessionHelper
   end
 
   def show_course_sessions
-    @course_sessions = Session.where(course_id: params[:course_id])
+    @course_sessions = Session.where(course_id: params[:course_id]).order(:start_time)
     if @course_sessions
       render "objects/course_session.json"
     else
@@ -20,7 +20,7 @@ module CourseSessionHelper
 
   def show_course_session_instructor
     course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
-    @course_sessions = Session.where(course_id: params[:course_id], course_instructor: course_instructor)
+    @course_sessions = Session.where(course_id: params[:course_id], course_instructor: course_instructor).order(:start_time)
     if @course_sessions
       render "objects/course_session.json"
     else
@@ -32,7 +32,7 @@ module CourseSessionHelper
   end
 
   def show_course_session
-    @course_session = Session.find(params[:session_id])# find session by its id.
+    @course_session = Session.find(params[:session_id])
     if @course_session != nil
       render 'objects/course_session.json'
     else
@@ -43,7 +43,7 @@ module CourseSessionHelper
 
   end
 
-  def create
+  def create_session
     course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
     @course_session = Session.new(course_session_params)
     # @course_session.start_time = @course_session.start_time
@@ -65,7 +65,7 @@ module CourseSessionHelper
     end
   end
 
-  def update
+  def update_session
     course_session_new = Session.new(course_session_params)
     @course_session = Session.find(params[:session_id])# find session by its id.
     if @course_session.state != "past" && course_session_new.state == "future"
@@ -86,7 +86,7 @@ module CourseSessionHelper
 
   end
 
-  def delete
+  def delete_session
     found_session = Session.find(params[:session_id])
     if found_session == nil
       @msg = "Error in deleting session"
@@ -100,8 +100,8 @@ module CourseSessionHelper
 
   def end_session
     @course_session = Session.find(params[:session_id])# need to check
-    if @course_session == nil
-      @msg = "Error in deleting session"
+    if @course_session == nil || @course_session.state != "present"
+      @msg = "Error in ending session"
       render "objects/msg.json", status: :bad_request and return
     end
     @course_session.end_time = Time.now
