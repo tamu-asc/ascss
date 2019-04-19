@@ -31,8 +31,7 @@ $(document).ready(function() {
                 var coursename=getUrlParameter('coursename');
                 var sessionfilename="js/SISession" + courseid+".json";
                 
-                $.getJSON(sessionfilename,
-                          function(data){
+                $.get('leader/course/'+courseid + '/sessions').then(function(data){
                                 
                                 $('#coursetitle').append($('<h1>'+coursename+'</h1>'))
                             $(data).each(function(i,sessionn){
@@ -82,7 +81,9 @@ $(document).ready(function() {
                                                           );    
                             });
             
-                })    
+                }).fail(function(err) {
+                    alert(err.statusCode)
+                })   
                   
                     
             

@@ -32,7 +32,6 @@ $(document).ready(function() {
                 
                 $.get('/api/leader/courses').then(
                 function(data){
-                    data.courses = [];
                     if(data.courses.length == 0) {
                         $('.no-course-class').text('NO COURSES TO VIEW');
                         $('.no-course-class').show()
