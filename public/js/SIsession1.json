@@ -1,0 +1,37 @@
+[
+    {
+      "id": 1,
+      "name": "C1Session1",
+      "leader_id": 1,
+      "start_time": 1554853696,
+      "end_time": 1554855696,
+      "state": "past",
+      "address": "4302 College Main St, Bryan, TX",
+      "description": "A very long description, which you should not show in the title of the session. This class happens everyday at the above mentioned location."
+    },
+    
+     {
+      "id": 2,	 
+      "name": "C1Session2",
+      "leader_id": 1,
+      "start_time": 1554853696,
+      "end_time": 1554855696,
+      "state": "present",
+      "address": "110 Reveille Ranch, Bryan, TX",
+      "description": "A very long description, which you should not show in the title of the session"
+    },
+    
+    {
+	  "id": 3,
+      "name": "C2Session3",
+      "leader_id": 1,
+      "start_time": 1554853696,
+      "end_time": 1554855696,
+      "state": "future",
+      "address": "1037 ETB, College Station, TX",
+      "description": "A very long description, which you should not show in the title of the session"
+    }
+
+  ]
+
+
