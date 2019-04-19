@@ -1,7 +1,6 @@
 function c(courseid,coursename) {
     var redirectpage="coursepage.html"+"?courseid="+courseid+"&coursename="+coursename;
     window.location.replace(redirectpage);
-    // window.localStorage.setItem()
   }
 
 $(document).ready(function() {
@@ -24,17 +23,23 @@ $(document).ready(function() {
                     });
                 } else {
                     $('#CoursesTable').hide();
-                    $('.table-customise').append($("<div class='text-center'> NO COURSES TO VIEW </div>"))
+                    $('.table-customise').append($("<div class='text-center no-course-class'> NO COURSES TO VIEW </div>"))
             
                 }
                 },function(err) {
                     alert(err);
                 })
-            
-                //JSON for courses assigned to SI Leader
-                $.getJSON('js/SIcourses.json',
+                
+                $.get('/api/leader/courses').then(
                 function(data){
-                    $(data).each(function(i,course){
+                    if(data.courses.length == 0) {
+                        $('.no-course-class').text('NO COURSES TO VIEW');
+                        $('.no-course-class').show()
+                        
+                    } else {
+                        $('.no-course-class').empty();
+                        $('.no-course-class').hide();
+                    $(data.courses).each(function(i,course){
                         $('#SICoursesBody').append($("<tr>")
                             .append($("<td>").append(course.id))
                             .append($("<td>").append(course.code))
@@ -44,8 +49,8 @@ $(document).ready(function() {
                             .append($("<td>").append(course.credits))
                             .append($('<td><button onclick="c(\''+ course.id + '\',\'' + course.title + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
                     });
-                },function(err) {
-                    alert(err);
+                }}).fail(function(err){
+                    alert("error fetching courses, try again later");
                 })
             
                   $("#logout").click(function () {
