@@ -14,6 +14,8 @@ courses = Course.create([{title: "Software", semester: "spring", year: 2019, cre
 course_students = CourseStudent.create([{username: "utkarshc", course: courses.first, user: users.first}])
 course_instructors = CourseInstructor.create([{username: "utkarsh", course: courses.first, user: users.second}])
 
-sessions = Session.create([{name: "My Session", course: courses.first, course_instructor: course_instructors.first, start_time: Time.at(1558297380), end_time: Time.at(1558300980), address: "300 Bizzel St, College Station, TX", description: "This is a desc", batch: "some"}])
+sessions = Session.create([{name: "My Session", course: courses.first, course_instructor: course_instructors.first, start_time: Time.at(1558297380), end_time: Time.at(1558300980), address: "300 Bizzel St, College Station, TX", description: "This is a desc", batch: "some"},
+                           {name: "My Present Session", course: courses.first, course_instructor: course_instructors.first, start_time: Time.at(1555708306), end_time: Time.at(1558300980), address: "300 Bizzel St, College Station, TX", description: "This is a desc", batch: "some"},
+                           {name: "My Past Session", course: courses.first, course_instructor: course_instructors.first, start_time: Time.at(1555708106), end_time: Time.at(1555708306), address: "300 Bizzel St, College Station, TX", description: "This is a desc", batch: "some"}])
 
 
