@@ -1,0 +1,10 @@
+{ 
+	  "id": 3,
+      "name": "C2Session3",
+      "leader_id": 1,
+      "start_time": 1554853696,
+      "end_time": 1554855696,
+      "state": "future",
+      "address": "1037 ETB, College Station, TX",
+      "description": "A very long description, which you should not show in the title of the session"
+}
