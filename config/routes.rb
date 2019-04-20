@@ -35,5 +35,7 @@ Rails.application.routes.draw do
     match "/student/courses" => "course_student#show", via: :get
     match "/leader/courses" => "course_instructor#show", via: :get
   end
+
+  match "*path" => "api/application#not_found", via: :get
 # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
