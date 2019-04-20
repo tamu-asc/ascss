@@ -67,23 +67,30 @@ module CourseSessionHelper
 
   def update_session
     course_session_new = Session.new(course_session_params)
-    @course_session = Session.find(params[:session_id])# find session by its id.
-    if @course_session.state != "past" && course_session_new.state == "future"
-      @course_session.start_time = course_session_new.start_time
-      @course_session.end_time = course_session_new.end_time
+    @course_session = Session.find(params[:session_id])
+    if @course_session.state == "future" && course_session_new.state == "future"
+      begin
+      @course_session.update_attributes!(course_session_params)
+      render 'objects/course_session.json'
+      rescue StandardError => e
+        @msg = "Error updating sessions"
+        @details = e.message
+        render "objects/msg.json", status: :bad_request
+      end
+      # @course_session.start_time = course_session_new.start_time
+      # @course_session.end_time = course_session_new.end_time
     else
       @msg = "Check the times you have entered"
       render "objects/msg.json", status: :bad_request and return
     end
-    if @course_session.save
-      @msg = "session succesfult saved to db."
-      render 'objects/course_session.json'
-    else
-      @msg = "Error in updating course"
-      @details = @course_session.errors
-      render "objects/msg.json", status: :bad_request
-    end
-
+    # if @course_session.save
+    #   @msg = "session succesfult saved to db."
+    #   render 'objects/course_session.json'
+    # else
+    #   @msg = "Error in updating course"
+    #   @details = @course_session.errors
+    #   render "objects/msg.json", status: :bad_request
+    # end
   end
 
   def delete_session
@@ -101,7 +108,7 @@ module CourseSessionHelper
   def end_session
     @course_session = Session.find(params[:session_id])# need to check
     if @course_session == nil || @course_session.state != "present"
-      @msg = "Error in ending session"
+      @msg = "Error in ending session, not present"
       render "objects/msg.json", status: :bad_request and return
     end
     @course_session.end_time = Time.now
