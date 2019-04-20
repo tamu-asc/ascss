@@ -64,28 +64,28 @@
 	  <div class="modal-body">
 		<form id="sessionform">
           <div class="form-group">
-          <label for="Session-Name" class="col-form-label">Session Name:</label>    <input class="form-control form-control-lg" type="text" name="name">
+          <label for="Session-Name" class="col-form-label ">Session Name:</label>    <input class="form-control form-control-lg edit_session_name" type="text" name="name">
           </div>
           <div class="form-group">
             <label for="start-time" class="col-form-label">Start Time:</label> 
-		    <input class="form-control form-control-lg" type="text" name="start_time">
+		    <input class="form-control form-control-lg edit_session_start_time" type="text" name="start_time">
           </div>
          <div class="form-group">
         <label for="end-time" class="control-label">End Time:</label>   
-		<input class="form-control form-control-lg" type="text" name="end_time">
+		<input class="form-control form-control-lg edit_session_end_time" type="text" name="end_time">
             </div>
             <div class="form-group">
         <label for="address" class="col-form-label">Address:</label>
-        <input class="form-control form-control-lg" type="text" name="address">
+        <input class="form-control form-control-lg edit_session_address" type="text" name="address">
             </div>
         <div class="form-group">
         <label for="description" class="col-form-label">Description:</label>
-        <input class="form-control form-control-lg" type="text" name="description">
+        <input class="form-control form-control-lg edit_session_description" type="text" name="description">
         </div>
 		</form>
           <div class="modal-footer">
-        <button type="button" class="btn btn-danger">Delete</button>
-        <button type="button" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-danger delete_session">Delete</button>
+        <button type="button" class="btn btn-primary save_session">Save Changes</button>
          </div>
           
       </div>
@@ -108,30 +108,30 @@
 	  <div class="modal-body">
 		<form id="sessionform">
         <div class="form-group">
-        <label for="Session-Name" class="col-form-label">Session Name:</label>
-         <input class="form-control form-control-lg" type="text" name="name">
+        <label for="Session-Name" class="col-form-label ">Session Name:</label>
+         <input class="form-control form-control-lg create_session_name" type="text" name="name">
         </div>
         <div class="form-group">
-        <label for="start-time" class="col-form-label">Start Time:</label>
-        <input class="form-control form-control-lg" type="datetime-local" name="start_time" placeholder="YYYY-MM-DDTHH:MM" 
+        <label for="start-time" class="col-form-label ">Start Time:</label>
+        <input class="form-control form-control-lg create_session_start_time" type="datetime-local" name="start_time" placeholder="YYYY-MM-DDTHH:MM" 
          min="2019-04-19T00:00" max="2100-06-14T00:00">
         </div>
         <div class="form-group">
         <label for="end-time" class="control-label">End Time:</label>
-        <input class="form-control form-control-lg" type="datetime-local" name="end_time" placeholder="YYYY-MM-DDTHH:MM" 
+        <input class="form-control form-control-lg create_session_end_time" type="datetime-local" name="end_time" placeholder="YYYY-MM-DDTHH:MM" 
          min="2019-04-19T00:00" max="2100-06-14T00:00">
         </div>
         <div class="form-group">
         <label for="address" class="col-form-label">Address:</label>
-        <input class="form-control form-control-lg" type="text" name="address">
+        <input class="form-control form-control-lg create_session_address" type="text" name="address">
         </div>
         <div class="form-group">
         <label for="description" class="col-form-label">Description:</label>
-		<input class="form-control form-control-lg" type="text" name="description">
+		<input class="form-control form-control-lg create_session_description" type="text" name="description">
         </div>
 		</form>
           <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Create</button>
+        <button type="button" class="btn btn-primary create_session">Create</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
     </div>
           

@@ -1,16 +1,37 @@
+var sessions;
+var curr_session;
+var curr_course;
+var startTime = 1558297380;
+var endTIme =  1558300980;
+
 function editfn(sessionn_id)
 {
-var session_file_ind="js/SIsessionind"+sessionn_id+".json";
-$.getJSON(session_file_ind,
-function(sess){
+curr_session = sessionn_id;
+sess = sessions.filter((data)=> data.id==sessionn_id);
+sess = sess[0];
 for(key in sess)
 {
 if(sess.hasOwnProperty(key))
 $('input[name='+key+']').val(sess[key]);
 }
-})
-
 }
+
+
+function endfn(session_id) {
+    $.ajax({  
+        url: '/api/leader/course/' + curr_course + '/session/' + session_id +'/end_session', 
+        type: 'POST',  
+        contentType: "application/json",
+        dataType: 'json',  
+        success: function (data, textStatus, xhr) {  
+            location.reload()
+        },  
+        error: function (xhr, textStatus, errorThrown) {  
+            alert('error occured while ending session (session is expired)')
+            console.log('Error in Operation',errorThrown);  
+        }  
+    })
+} 
 
 
 function popfn(session_id) {
@@ -23,8 +44,74 @@ function closedesc(description_id) {
 
 
 $(document).ready(function() {
+       
+        
+    $('.delete_session').click(function() {
+        $.ajax({
+            url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
+            type: 'DELETE',
+            success: function(result) {
+                location.reload()
+            }
+        });
+    })
 
+    $('.save_session').click(function() {
+        var obj = {
+            "session": {
+              "name": $('.edit_session_name').val(),
+              "start_time": startTime,
+              "end_time": endTIme,
+            //   "state": "future",
+              "address": $('.edit_session_address').val(),
+              "description": $('.edit_session_description').val()
+            }
+          }
 
+        $.ajax({  
+            url: '/api/leader/course/' + curr_course + '/session/' + curr_session,  
+            type: 'PATCH',  
+            contentType: "application/json",
+            data: JSON.stringify(obj),  
+            dataType: 'json',  
+            success: function (data, textStatus, xhr) {  
+                location.reload()
+            },  
+            error: function (xhr, textStatus, errorThrown) {  
+                console.log('Error in Operation',errorThrown);  
+            }  
+        })
+    })
+
+    $('.create_session').click(function() {
+        var obj = {
+            "session": {
+              "name": $('.create_session_name').val(),
+              "start_time": startTime,
+              "end_time": endTIme,
+            //   "state": "future",
+              "address": $('.create_session_address').val(),
+              "description": $('.create_session_description').val()
+            }
+          }
+
+        $.ajax({  
+            url: '/api/leader/course/' + curr_course + '/session/' , 
+            type: 'POST',  
+            contentType: "application/json",
+            data: JSON.stringify(obj),  
+            dataType: 'json',  
+            success: function (data, textStatus, xhr) {  
+                location.reload()
+            },  
+            error: function (xhr, textStatus, errorThrown) {  
+                console.log('Error in Operation',errorThrown);  
+            }  
+        })
+    })
+    
+    
+    
     $.get('/api/user').then(
         function(data){
 
@@ -43,11 +130,12 @@ $(document).ready(function() {
             }
         };
                 var courseid=getUrlParameter('courseid');
+                curr_course = courseid;
                 var coursename=getUrlParameter('coursename');
                 var sessionfilename="js/SISession" + courseid+".json";
 
                 $.get('/api/leader/course/'+courseid + '/sessions').then(function(data){
-
+                    sessions = data.sessions;
                                 $('#coursetitle').append($('<h1>'+coursename+'</h1>'))
                             $(data.sessions).each(function(i,sessionn){
                         var $edit_object;
@@ -60,8 +148,7 @@ $(document).ready(function() {
                         if(sessionn.state=="active")
                         {
                         $edit_object='<td><button disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
-                        $end_object='<td><button id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
-                        }
+                        $end_object='<td><button id="endbutton'+sessionn.id+'" onclick="endfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">End</button>';                            }
 
                         if(sessionn.state=="past")
                         {
