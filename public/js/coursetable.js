@@ -1,5 +1,6 @@
-function c(courseid,coursename) {
-    var redirectpage="coursepage.html"+"?courseid="+courseid+"&coursename="+coursename;
+function c(courseid) {
+    //var redirectpage="coursepage.html"+"?courseid="+courseid+"&coursename="+coursename;
+    var redirectpage="coursepage.html"+"?courseid="+courseid;
     window.location.replace(redirectpage);
   }
 
@@ -24,18 +25,18 @@ $(document).ready(function() {
                 } else {
                     $('#CoursesTable').hide();
                     $('.table-customise').append($("<div class='text-center no-course-class'> NO COURSES TO VIEW </div>"))
-            
+
                 }
                 },function(err) {
                     alert(err);
                 })
-                
+
                 $.get('/api/leader/courses').then(
                 function(data){
                     if(data.courses.length == 0) {
                         $('.no-course-class').text('NO COURSES TO VIEW');
                         $('.no-course-class').show()
-                        
+
                     } else {
                         $('.no-course-class').empty();
                         $('.no-course-class').hide();
@@ -47,40 +48,41 @@ $(document).ready(function() {
                             .append($("<td>").append(course.semester))
                             .append($("<td>").append(course.year))
                             .append($("<td>").append(course.credits))
-                            .append($('<td><button onclick="c(\''+ course.id + '\',\'' + course.title + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
+                            .append($('<td><button onclick="c(\''+ course.id + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
+                            //.append($('<td><button onclick="c(\''+ course.id + '\',\'' + course.title + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
                     });
                 }}).fail(function(err){
                     alert("error fetching courses, try again later");
                 })
-            
+
                   $("#logout").click(function () {
                       $.post("/api/logout", function (data) {
                           localStorage.setItem("login", "FALSE");
                           window.location.assign('/index')
                       });
                   });
-            
+
                   $("#Studentbutton").click(function(){
                   $("#Studentcoursesection").show();
                   $("#SILeadercoursesection").hide();
                   });
-            
+
                   $("#SILeaderbutton").click(function(){
                   $("#SILeadercoursesection").show();
                   $("#Studentcoursesection").hide();
                   });
-            
+
                     $("#studentnavitem").on("click", function() {
                     $("#sileadernavitem").removeClass("active");
                     $(this).addClass("active");
                   });
-            
+
                     $("#sileadernavitem").on("click", function() {
                     $("#studentnavitem").removeClass("active");
                     $(this).addClass("active");
                   });
-            
-                  
+
+
         } else {
             window.location.assign("/index")
         }

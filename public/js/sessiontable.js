@@ -1,6 +1,7 @@
 var sessions;
 var curr_session;
 var curr_course;
+var repeat_session=0;
 var startTime = 1558297380;
 var endTIme =  1558300980;
 
@@ -18,20 +19,20 @@ $('input[name='+key+']').val(sess[key]);
 
 
 function endfn(session_id) {
-    $.ajax({  
-        url: '/api/leader/course/' + curr_course + '/session/' + session_id +'/end_session', 
-        type: 'POST',  
+    $.ajax({
+        url: '/api/leader/course/' + curr_course + '/session/' + session_id +'/end_session',
+        type: 'POST',
         contentType: "application/json",
-        dataType: 'json',  
-        success: function (data, textStatus, xhr) {  
+        dataType: 'json',
+        success: function (data, textStatus, xhr) {
             location.reload()
-        },  
-        error: function (xhr, textStatus, errorThrown) {  
+        },
+        error: function (xhr, textStatus, errorThrown) {
             alert('error occured while ending session (session is expired)')
-            console.log('Error in Operation',errorThrown);  
-        }  
+            console.log('Error in Operation',errorThrown);
+        }
     })
-} 
+}
 
 
 function popfn(session_id) {
@@ -44,8 +45,8 @@ function closedesc(description_id) {
 
 
 $(document).ready(function() {
-       
-        
+
+
     $('.delete_session').click(function() {
         $.ajax({
             url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
@@ -68,18 +69,18 @@ $(document).ready(function() {
             }
           }
 
-        $.ajax({  
-            url: '/api/leader/course/' + curr_course + '/session/' + curr_session,  
-            type: 'PATCH',  
+        $.ajax({
+            url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
+            type: 'PATCH',
             contentType: "application/json",
-            data: JSON.stringify(obj),  
-            dataType: 'json',  
-            success: function (data, textStatus, xhr) {  
+            data: JSON.stringify(obj),
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
                 location.reload()
-            },  
-            error: function (xhr, textStatus, errorThrown) {  
-                console.log('Error in Operation',errorThrown);  
-            }  
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error in Operation',errorThrown);
+            }
         })
     })
 
@@ -95,23 +96,32 @@ $(document).ready(function() {
             }
           }
 
-        $.ajax({  
-            url: '/api/leader/course/' + curr_course + '/session/' , 
-            type: 'POST',  
+        if(repeat_session==1)
+        {
+          var repeat_count = $('.create_session_repeatcount').val();
+          redir_url = '/api/leader/course/' + curr_course + '/session/' + '?repeatcount=' + repeat_count;
+        }
+        else {
+          redir_url = '/api/leader/course/' + curr_course + '/session/';
+        }
+
+        $.ajax({
+            url: redir_url,
+            type: 'POST',
             contentType: "application/json",
-            data: JSON.stringify(obj),  
-            dataType: 'json',  
-            success: function (data, textStatus, xhr) {  
+            data: JSON.stringify(obj),
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
                 location.reload()
-            },  
-            error: function (xhr, textStatus, errorThrown) {  
-                console.log('Error in Operation',errorThrown);  
-            }  
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error in Operation',errorThrown);
+            }
         })
     })
-    
-    
-    
+
+
+
     $.get('/api/user').then(
         function(data){
 
@@ -129,9 +139,26 @@ $(document).ready(function() {
                 }
             }
         };
+
                 var courseid=getUrlParameter('courseid');
+
+
                 curr_course = courseid;
-                var coursename=getUrlParameter('coursename');
+
+                var coursename;
+                $.get('/api/course/'+courseid).then(function(data){
+                coursename = data.course.title;
+
+                }).fail(function(err) {
+                    alert(err.statusCode)
+                    console.log(err)
+                })
+
+
+
+
+                //var coursename=getUrlParameter('coursename');
+
                 var sessionfilename="js/SISession" + courseid+".json";
 
                 $.get('/api/leader/course/'+courseid + '/sessions').then(function(data){
@@ -213,7 +240,22 @@ $(document).ready(function() {
                 window.location.replace(redirectpage);
                 });
 
+                $("#repeatSession").click(function(){
 
+
+                //$('#repeatsessionid').show();
+                if($("#repeatSession").is(':checked'))
+                {
+                  repeat_session=1;
+                  $('#repeatsessionid').show();
+                }
+                else
+                {
+                  repeat_session=0;
+                  $('#repeatsessionid').hide();
+                }
+
+                });
 
 
 

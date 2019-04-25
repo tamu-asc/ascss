@@ -15,11 +15,11 @@
 }
 </style>
 
-<head>    
+<head>
 <meta charset="UTF-8">
 </head>
 <body>
-    
+
     <nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="navbar-brand " href="#">Academic Success Center</a> -->
         <a href="#" class="navbar-branc"><img src="./images/ASC logo_horizontal_standard_RGB.png" style="max-height: 50px" alt=""></a>
@@ -60,24 +60,24 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    
+
 	  <div class="modal-body">
 		<form id="sessionform">
-          <div class="form-group">
-          <label for="Session-Name" class="col-form-label ">Session Name:</label>    <input class="form-control form-control-lg edit_session_name" type="text" name="name">
-          </div>
-          <div class="form-group">
-            <label for="start-time" class="col-form-label">Start Time:</label> 
+        <div class="form-group">
+        <label for="Session-Name" class="col-form-label ">Session Name:</label>    <input class="form-control form-control-lg edit_session_name" type="text" name="name">
+        </div>
+        <div class="form-group">
+        <label for="start-time" class="col-form-label">Start Time:</label>
 		    <input class="form-control form-control-lg edit_session_start_time" type="text" name="start_time">
-          </div>
-         <div class="form-group">
-        <label for="end-time" class="control-label">End Time:</label>   
-		<input class="form-control form-control-lg edit_session_end_time" type="text" name="end_time">
-            </div>
-            <div class="form-group">
+        </div>
+        <div class="form-group">
+        <label for="end-time" class="control-label">End Time:</label>
+		    <input class="form-control form-control-lg edit_session_end_time" type="text" name="end_time">
+        </div>
+        <div class="form-group">
         <label for="address" class="col-form-label">Address:</label>
         <input class="form-control form-control-lg edit_session_address" type="text" name="address">
-            </div>
+        </div>
         <div class="form-group">
         <label for="description" class="col-form-label">Description:</label>
         <input class="form-control form-control-lg edit_session_description" type="text" name="description">
@@ -87,13 +87,13 @@
         <button type="button" class="btn btn-danger delete_session">Delete</button>
         <button type="button" class="btn btn-primary save_session">Save Changes</button>
          </div>
-          
+
       </div>
-	  
+
     </div>
   </div>
 </div>
-    
+
 <!-- Modal -->
 <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="CreateModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -104,21 +104,21 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    
+
 	  <div class="modal-body">
 		<form id="sessionform">
         <div class="form-group">
         <label for="Session-Name" class="col-form-label ">Session Name:</label>
-         <input class="form-control form-control-lg create_session_name" type="text" name="name">
+        <input class="form-control form-control-lg create_session_name" type="text" name="name">
         </div>
         <div class="form-group">
         <label for="start-time" class="col-form-label ">Start Time:</label>
-        <input class="form-control form-control-lg create_session_start_time" type="datetime-local" name="start_time" placeholder="YYYY-MM-DDTHH:MM" 
+        <input class="form-control form-control-lg create_session_start_time" type="datetime-local" name="start_time" placeholder="YYYY-MM-DDTHH:MM"
          min="2019-04-19T00:00" max="2100-06-14T00:00">
         </div>
         <div class="form-group">
         <label for="end-time" class="control-label">End Time:</label>
-        <input class="form-control form-control-lg create_session_end_time" type="datetime-local" name="end_time" placeholder="YYYY-MM-DDTHH:MM" 
+        <input class="form-control form-control-lg create_session_end_time" type="datetime-local" name="end_time" placeholder="YYYY-MM-DDTHH:MM"
          min="2019-04-19T00:00" max="2100-06-14T00:00">
         </div>
         <div class="form-group">
@@ -127,29 +127,42 @@
         </div>
         <div class="form-group">
         <label for="description" class="col-form-label">Description:</label>
-		<input class="form-control form-control-lg create_session_description" type="text" name="description">
+		    <input class="form-control form-control-lg create_session_description" type="text" name="description">
         </div>
+
+        <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="repeatSession">
+        <label class="form-check-label" for="repeat">
+        Repeat
+        </label>
+        </div>
+
+        <div id="repeatsessionid" class="form-group" style="display:none">
+        <label for="repeatcount" class="col-form-label">Count:</label>
+		    <input class="form-control form-control-lg create_session_repeatcount" type="text" name="repeatcount">
+        </div>
+
 		</form>
-          <div class="modal-footer">
+        <div class="modal-footer">
         <button type="button" class="btn btn-primary create_session">Create</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
     </div>
-          
+
       </div>
-	  
+
     </div>
   </div>
-</div>    
+</div>
 
-    
- 
+
+
     <div class="container-fluid">
       <div class="row">
         <main class="col-sm-9 offset-sm-1 col-md-10 offset-md-1 pt-3">
-            
+
             <h1 id="coursetitle"></h1>
-            <button type="button" class="offset-sm-0 offset-md-0 btn btn-primary btn-sm" data-toggle="modal" data-target="#CreateModal">Create New</button>
-          <div class="table-responsive" style="margin-top: 10px;">
+            <button type="button" class="offset-sm-0 offset-md-0 btn btn-link btn-sm float-right" data-toggle="modal" data-target="#CreateModal">+ Create New</button>
+          <div class="table-responsive" style="margin-top: 70px;">
             <table class="table table-striped table-hover table-bordered">
               <thead id="SIsessiontablehead" thead class="thead-dark">
                 <tr>
@@ -165,14 +178,9 @@
               </tbody>
             </table>
           </div>
-            
+
         </main>
       </div>
     </div>
-   
-    
-
-    
 </body>
-
 </html>
