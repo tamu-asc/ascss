@@ -36,11 +36,16 @@ function endfn(session_id) {
 
 
 function popfn(session_id) {
-    $('#description'+session_id).show();
 
-}
-function closedesc(description_id) {
-    $('#description'+description_id).hide();
+var x = document.getElementById("description"+session_id);
+ if (x.class == "behidden") {
+   $('#description'+session_id).hide();
+   x.class="bevisible";
+ } else {
+   x.class = "behidden";
+   $('#description'+session_id).show();
+ }
+
 }
 
 
@@ -170,8 +175,8 @@ $(document).ready(function() {
                         var $session_name;
 
 
-        $session_name='<td><button onclick="popfn(\''+sessionn.id+'\')" type="button" id="sessionbutton'+sessionn.id+'" class="btn btn-sm btn-dark">'+sessionn.name+'</button>';
-
+        //$session_name='<td><button onclick="popfn(\''+sessionn.id+'\')" type="button" id="sessionbutton'+sessionn.id+'" class="btn btn-sm btn-dark">'+sessionn.name+'</button>';
+        $session_name='<td>'+sessionn.name;
                         if(sessionn.state=="active")
                         {
                         $edit_object='<td><button disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
@@ -200,7 +205,7 @@ $(document).ready(function() {
 
                         //$('#SISessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
                         //.append($("<th>").append(sessionn.name))
-                         $('#SISessionPageBody').append($('<tr>')
+                         $('#SISessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
                             .append($session_name)
                             .append($("<td>").append(starttime))
                             .append($("<td>").append(endtime))
@@ -208,7 +213,7 @@ $(document).ready(function() {
                             .append($edit_object)
                             .append($end_object)                      );
                             $('#SISessionPageBody').append($('<tr>')
-                            .append($('<td onclick="closedesc(\''+sessionn.id+'\')" colspan="100%" style="display:none;font-style:italic" id="description'+sessionn.id+'">'+sessionn.description+'<hide>'))
+                            .append($('<td colspan="100%" class= "bevisible" style="display:none;font-style:italic" id="description'+sessionn.id+'" >').append(sessionn.description))
                                                           );
                             });
 
