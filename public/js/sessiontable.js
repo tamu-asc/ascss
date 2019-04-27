@@ -5,6 +5,8 @@ var repeat_session=0;
 var startTime = 1558297380;
 var endTIme =  1558300980;
 
+
+
 function editfn(sessionn_id)
 {
 curr_session = sessionn_id;
@@ -50,6 +52,7 @@ var x = document.getElementById("description"+session_id);
 
 
 $(document).ready(function() {
+
 
 
     $('.delete_session').click(function() {
@@ -194,17 +197,24 @@ $(document).ready(function() {
                           $end_object='<td>';
                         }
 
+
+
                         var utcSeconds_starttime = sessionn.start_time;
                         var starttime = new Date(0);
-                        starttime.setUTCSeconds(utcSeconds_starttime);
 
+
+                        starttime.setUTCSeconds(utcSeconds_starttime);
+                        //starttime=starttime.toString().substring(4,21);
+                        starttime=starttime.toLocaleString();
 
                         var utcSeconds_endtime = sessionn.end_time;
                         var endtime = new Date(0);
-                        endtime.setUTCSeconds(utcSeconds_endtime);
 
-                        //$('#SISessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
-                        //.append($("<th>").append(sessionn.name))
+                        endtime.setUTCSeconds(utcSeconds_endtime);
+                        //endtime=endtime.toString().substring(4,21);
+                        endtime=endtime.toLocaleString();
+
+
                          $('#SISessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
                             .append($session_name)
                             .append($("<td>").append(starttime))
@@ -244,6 +254,22 @@ $(document).ready(function() {
                 var redirectpage="home.html";
                 window.location.replace(redirectpage);
                 });
+
+                $(function () {
+                  $('#starttimeid').datetimepicker();
+                  });
+
+                $(function () {
+                  $('#start_timeid').datetimepicker();
+                  });
+
+                $(function () {
+                  $('#endtimeid').datetimepicker();
+                  });
+
+                $(function () {
+                  $('#end_timeid').datetimepicker();
+                  });
 
                 $("#repeatSession").click(function(){
 

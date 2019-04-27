@@ -4,10 +4,18 @@ function c(courseid) {
     window.location.replace(redirectpage);
   }
 
+function std(courseid) {
+      //var redirectpage="coursepage.html"+"?courseid="+courseid+"&coursename="+coursename;
+    var redirectpage="stdcoursepage.html"+"?courseid="+courseid;
+    window.location.replace(redirectpage);
+    }
+
 $(document).ready(function() {
 
     $.get('/api/user').then(function(data) {
         if(data.user) {
+
+          /*
              //JSON for courses registered by student
                 $.getJSON('api/student/courses',
                 function(data,message){
@@ -30,6 +38,23 @@ $(document).ready(function() {
                 },function(err) {
                     alert(err);
                 })
+*/
+              $.getJSON('js/courses.json',
+              function(data){
+                //console.log(data);
+                $(data).each(function(i,course){
+                  $('#CoursesBody').append($("<tr>")
+                  .append($("<th>").append(course.id))
+                  .append($("<td>").append(course.code))
+                  .append($("<td>").append(course.title))
+                  .append($("<td>").append(course.semester))
+                  .append($("<td>").append(course.year))
+                  .append($("<td>").append(course.credits))
+                  .append($('<td><button onclick="std(\''+ course.id + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
+                });
+              })
+
+
 
                 $.get('/api/leader/courses').then(
                 function(data){

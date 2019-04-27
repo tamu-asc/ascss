@@ -75,14 +75,14 @@
         <div class="card">
             <div class="card-header" id="StudentCourseheading1">
                 <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="false" aria-controls="stdcollapseOne">View Courses</button>
+                    <button class="btn btn-link collapsed" id="StdViewCourses" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="false" aria-controls="stdcollapseOne">View Courses</button>
                 </h5>
             </div>
 
             <div id="stdcollapseOne" class="collapse" aria-labelledby="StudentCourseheading1" data-parent="#Studentcoursesection">
                 <div class="card-body table-customise">
                     <table id="CourseTable" class="table">
-                        <thead class="thead-primary">
+                        <thead id="Stdcoursetablehead" class="thead-primary">
                             <tr>
                             <th scope="col">ID</th>
                             <th scope="col">CODE</th>
@@ -94,6 +94,8 @@
                             </tr>
                         </thead>
                         <tbody id="CoursesBody"></tbody>
+                    </table>
+                    <table id="StdsessionTable" class="table"  style="display:none">
                     </table>
                 </div>
             </div>
