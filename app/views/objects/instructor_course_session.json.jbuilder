@@ -22,4 +22,3 @@ if @course_sessions != nil
   end
 
 end
-
