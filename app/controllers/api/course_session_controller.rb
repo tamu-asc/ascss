@@ -9,6 +9,14 @@ class Api::CourseSessionController < Api::AuthController
     show_course_session_instructor
   end
 
+  def show_by_course
+    show_course_session_student
+  end
+
+  def mark_attendance
+    mark_attendance_student
+  end
+
   def show
     show_course_session
   end

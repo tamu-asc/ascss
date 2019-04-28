@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     match "/leader/course/:course_id/session/:session_id" => "course_session#delete", via: :delete
     match "/leader/course/:course_id/session/:session_id/end_session" => "course_session#end", via: :post
     match "/student/courses" => "course_student#show", via: :get
+    match 'student/course/:course_id/sessions' => 'course_session#show_by_course', via: :get
+    match 'student/course/:course_id/session/:session_id/mark_attendance' => 'course_session#mark_attendance', via: :post
     match "/leader/courses" => "course_instructor#show", via: :get
   end
 
