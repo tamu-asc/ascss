@@ -15,7 +15,7 @@ $(document).ready(function() {
     $.get('/api/user').then(function(data) {
         if(data.user) {
 
-          /*
+      
              //JSON for courses registered by student
                 $.getJSON('api/student/courses',
                 function(data,message){
@@ -28,7 +28,7 @@ $(document).ready(function() {
                             .append($("<td>").append(course.semester))
                             .append($("<td>").append(course.year))
                             .append($("<td>").append(course.credits))
-                            .append($('<td><button class="btn btn-primary btn-sm" type="button">View</button>')));
+                            .append($('<td><button onclick="std(\''+ course.id + '\')" class="btn btn-primary btn-sm" type="button">View</button>')));
                     });
                 } else {
                     $('#CoursesTable').hide();
@@ -38,21 +38,21 @@ $(document).ready(function() {
                 },function(err) {
                     alert(err);
                 })
-*/
-              $.getJSON('js/courses.json',
-              function(data){
-                //console.log(data);
-                $(data).each(function(i,course){
-                  $('#CoursesBody').append($("<tr>")
-                  .append($("<th>").append(course.id))
-                  .append($("<td>").append(course.code))
-                  .append($("<td>").append(course.title))
-                  .append($("<td>").append(course.semester))
-                  .append($("<td>").append(course.year))
-                  .append($("<td>").append(course.credits))
-                  .append($('<td><button onclick="std(\''+ course.id + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
-                });
-              })
+
+              // $.getJSON('js/courses.json',
+              // function(data){
+              //   //console.log(data);
+              //   $(data).each(function(i,course){
+              //     $('#CoursesBody').append($("<tr>")
+              //     .append($("<th>").append(course.id))
+              //     .append($("<td>").append(course.code))
+              //     .append($("<td>").append(course.title))
+              //     .append($("<td>").append(course.semester))
+              //     .append($("<td>").append(course.year))
+              //     .append($("<td>").append(course.credits))
+              //     .append($('<td><button onclick="std(\''+ course.id + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
+              //   });
+              // })
 
 
 

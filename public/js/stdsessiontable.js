@@ -60,7 +60,7 @@ $(document).ready(function() {
 */
           //      var sessionfilename="js/StdSession" + courseid+".json";
 
-                $.get('/api/leader/course/'+courseid + '/sessions').then(function(data){
+                $.get('/api/student/course/'+courseid + '/sessions').then(function(data){
                     sessions = data.sessions;
                                 $('#coursetitle').append($('<h1>'+coursename+'</h1>'))
                             $(data.sessions).each(function(i,sessionn){
