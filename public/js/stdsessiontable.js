@@ -6,6 +6,28 @@ var startTime = 1558297380;
 var endTIme =  1558300980;
 
 function markfn(session_id) {
+        // $.post(, function (data) {
+        // // document.getElementById('markbutton'+session_id).disabled = true;
+          
+        // },function(err) {
+           
+        // }
+        //  )
+
+
+         $.ajax({
+            url: "/api/student/course/" +  curr_course  + "/session/" + session_id + "/mark_attendance",
+            type: 'POST',
+            contentType: "application/json",
+            dataType: 'json',
+            success: function ({}, textStatus, xhr) {
+                location.reload()
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('some error occures, try again later! \n if error persists, contact admin')
+                console.log('Error in Operation',errorThrown);
+            }
+        })
 
 }
 
@@ -43,9 +65,18 @@ $(document).ready(function() {
 
                 var courseid=getUrlParameter('courseid');
                 curr_course = courseid;
+                var course_code;
                 var coursename;
+
+                $.get('/api/course/'+courseid).then(function(data) {
+                    coursename = data.course.title;
+                    course_code = data.course.code;
+                    coursename = course_code + ' - ' + coursename;
+                }).fail(function(err){
+                    alert('error while fetching course details ')
+                })
 //
-                coursename = "Software";
+                
 
 /*
                 $.get('/api/course/'+courseid).then(function(data){
@@ -71,18 +102,24 @@ $(document).ready(function() {
         $session_name='<td>'+sessionn.name;
                         if(sessionn.state=="active")
                         {
+                            if(!sessionn.hasOwnProperty('attendance')) {
                         $mark_attendance_object='<td><button id="markbutton'+sessionn.id+'" onclick="markfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">Mark</button>';
+                            } else {
+                                $mark_attendance_object='<td style="color:green;"><b>In time: '+new Date(sessionn.attendance.in_time * 1000).toLocaleString() +'</b>';
+
+                            }
+
                         }
 
                         if(sessionn.state=="past")
                         {
                         //$mark_attendance_object='<td><button disabled id="markbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">Mark</button></td>';
-                          $mark_attendance_object='<td>';
+                          $mark_attendance_object='<td style="color:red"><b>Not Available</b>';
                         }
 
                         if(sessionn.state=="future")
                         {
-                          $mark_attendance_object='<td>';
+                          $mark_attendance_object='<td style="color:red"><b>Not Available</b>';
                         }
 
                         var utcSeconds_starttime = sessionn.start_time;
@@ -107,7 +144,7 @@ $(document).ready(function() {
                             .append($("<td>").append(starttime))
                             .append($("<td>").append(endtime))
                             .append($("<td>").append(sessionn.address))
-                            .append($("<td>").append(sessionn.instructor))
+                            .append($("<td>").append(sessionn.leader.first_name + sessionn.leader.last_name))
                             .append($mark_attendance_object)                      );
                             $('#StdSessionPageBody').append($('<tr>')
                             .append($('<td colspan="100%" class= "bevisible" style="display:none;font-style:italic" id="description'+sessionn.id+'" >').append(sessionn.description))
