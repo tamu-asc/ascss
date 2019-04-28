@@ -14,13 +14,16 @@
 .pad-15{
     padding: 15px;
 }
+.active {
+    background-color: grey;
+}
 </style>
 
-<head>    
+<head>
 <meta charset="UTF-8">
 </head>
 <body>
-    
+
     <nav class="mb-1 navbar navbar-expand-lg navbar-dark black">
         <!-- <a class="navbar-brand " href="#">Academic Success Center</a> -->
         <a href="#" class="navbar-branc"><img src="./images/ASC logo_horizontal_standard_RGB.png" style="max-height: 50px" alt=""></a>
@@ -56,7 +59,7 @@
         </div>
     </nav>
 
-<div id="coursecont" class="container">  
+<div id="coursecont" class="container">
         <div class="jumbotron">
                 <!--<h3 >Instructions:</h1> <- Seriously, this!!-->
                 <h1>Instructions:</h1>
@@ -68,21 +71,21 @@
                 </p>
         </div>
 
-    <button type="button" class="btn btn-dark btn-lg btn-block">Registered Courses</button>   
-    
-    
+    <button type="button" class="btn btn-dark btn-lg btn-block">Registered Courses</button>
+
+
     <div class="accordion" id="Studentcoursesection">
         <div class="card">
             <div class="card-header" id="StudentCourseheading1">
                 <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="false" aria-controls="stdcollapseOne">View Courses</button>
+                    <button class="btn btn-link collapsed" id="StdViewCourses" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="false" aria-controls="stdcollapseOne">View Courses</button>
                 </h5>
             </div>
 
             <div id="stdcollapseOne" class="collapse" aria-labelledby="StudentCourseheading1" data-parent="#Studentcoursesection">
-                <div class="card-body table-customise">    
+                <div class="card-body table-customise">
                     <table id="CourseTable" class="table">
-                        <thead class="thead-primary">
+                        <thead id="Stdcoursetablehead" class="thead-primary">
                             <tr>
                             <th scope="col">ID</th>
                             <th scope="col">CODE</th>
@@ -90,31 +93,33 @@
                             <th scope="col">SEMESTER</th>
                             <th scope="col">YEAR</th>
                             <th scope="col">CREDITS</th>
-                            <th scope="col">SESSIONS</th>    
+                            <th scope="col">SESSIONS</th>
                             </tr>
                         </thead>
                         <tbody id="CoursesBody"></tbody>
-                    </table>        
+                    </table>
+                    <table id="StdsessionTable" class="table"  style="display:none">
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    
-    
-    
-    
+
+
+
+
      <div class="accordion" id="SILeadercoursesection" style="display:none">
         <div class="card">
             <div class="card-header" id="SILeaderCourseheading1">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" id="SIViewCourses" type="button" data-toggle="collapse" data-target="#SIcollapseOne" aria-expanded="false" aria-controls="SIcollapseOne">View Courses</button>
                 <!--    <button class="btn btn-primary btn-sm col-3 float-right" id="Backbutton" type="button" style="display:none">Back</button> !-->
-                    
+
                 </h5>
             </div>
 
             <div id="SIcollapseOne" class="collapse" aria-labelledby="SILeaderCourseheading1" data-parent="#SILeadercoursesection">
-                <div class="card-body table-customise">    
+                <div class="card-body table-customise">
                     <table id="SICourseTable" class="table">
                         <thead id="SIcoursetablehead" class="thead-primary">
                             <tr>
@@ -124,42 +129,25 @@
                             <th scope="col">SEMESTER</th>
                             <th scope="col">YEAR</th>
                             <th scope="col">CREDITS</th>
-                            <th scope="col">SESSIONS</th>    
+                            <th scope="col">SESSIONS</th>
                             </tr>
                         </thead>
                         <tbody id="SICoursesBody"></tbody>
-                    </table>  
-                    
-                    
+                    </table>
+
                     <table id="SIsessionTable" class="table"  style="display:none">
-                        <thead id="SIsessiontablehead" class="thead-primary">
-                            <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Back to Courses<a href="#"> <img width="30" height="20" src="images/back_buton.png" id="Backbutton" style="display:none"></a> </th>
-                            <th scope="col"><button type="button" class="btn btn-dark btn-sm">Create New</button></th>
-                            </tr>
-                        </thead>
-                        <tbody id="SISessionBody">
-                            
-                        </tbody>
-                        
-                    </table>  
-                    
-                   
-                    
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    
-    
-    
-    
+
+
+
+
 </div>
 
-    
+
 </body>
 
 </html>
