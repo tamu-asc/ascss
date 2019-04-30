@@ -5,7 +5,21 @@ var repeat_session=0;
 var startTime = 1558297380;
 var endTIme =  1558300980;
 
+  $(function () {
+    $('#starttimeid').datetimepicker();
+    });
 
+  $(function () {
+    $('#start_timeid').datetimepicker();
+    });
+
+  $(function () {
+    $('#endtimeid').datetimepicker();
+      });
+
+  $(function () {
+    $('#end_timeid').datetimepicker();
+    });
 
 function editfn(sessionn_id)
 {
@@ -17,6 +31,35 @@ for(key in sess)
 if(sess.hasOwnProperty(key))
 $('input[name='+key+']').val(sess[key]);
 }
+
+var starttime_epochsecs=sess.start_time;
+var endtime_epochsecs=sess.end_time;
+
+var starttime_millis=starttime_epochsecs*1000;
+var endtime_millis=endtime_epochsecs*1000;
+
+var starttime_dateobject= new Date(starttime_millis);
+var endtime_dateobject= new Date(endtime_millis);
+
+var starttime_day = (starttime_dateobject.getDate() < 10 ? '0' : '') + starttime_dateobject.getDate();
+var starttime_month = (starttime_dateobject.getMonth() < 9 ? '0' : '') + (starttime_dateobject.getMonth() + 1);
+var starttime_year = starttime_dateobject.getFullYear();
+var starttime_hours = starttime_dateobject.getHours();
+var starttime_minutes = (starttime_dateobject.getMinutes() < 10 ? '0' : '') + starttime_dateobject.getMinutes();
+
+var endtime_day = (endtime_dateobject.getDate() < 10 ? '0' : '') + endtime_dateobject.getDate();
+var endtime_month = (endtime_dateobject.getMonth() < 9 ? '0' : '') + (endtime_dateobject.getMonth() + 1);
+var endtime_year = endtime_dateobject.getFullYear();
+var endtime_hours = endtime_dateobject.getHours();
+var endtime_minutes = (endtime_dateobject.getMinutes() < 10 ? '0' : '') + endtime_dateobject.getMinutes();
+
+var startstring=starttime_year+'/'+starttime_month+'/'+starttime_day+' '+starttime_hours+':'+starttime_minutes;
+var endstring=endtime_year+'/'+endtime_month+'/'+endtime_day+' '+endtime_hours+':'+endtime_minutes;
+$('#starttimeid').val(startstring);
+$('#endtimeid').val(endstring);
+
+
+
 }
 
 
@@ -254,22 +297,6 @@ $(document).ready(function() {
                 var redirectpage="home.html";
                 window.location.replace(redirectpage);
                 });
-
-                $(function () {
-                  $('#starttimeid').datetimepicker();
-                  });
-
-                $(function () {
-                  $('#start_timeid').datetimepicker();
-                  });
-
-                $(function () {
-                  $('#endtimeid').datetimepicker();
-                  });
-
-                $(function () {
-                  $('#end_timeid').datetimepicker();
-                  });
 
                 $("#repeatSession").click(function(){
 
