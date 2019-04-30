@@ -5,7 +5,21 @@ var repeat_session=0;
 var startTime = 1558297380;
 var endTIme =  1558300980;
 
+  $(function () {
+    $('#starttimeid').datetimepicker();
+    });
 
+  $(function () {
+    $('#start_timeid').datetimepicker();
+    });
+
+  $(function () {
+    $('#endtimeid').datetimepicker();
+      });
+
+  $(function () {
+    $('#end_timeid').datetimepicker();
+    });
 
 function editfn(sessionn_id)
 {
@@ -17,6 +31,35 @@ for(key in sess)
 if(sess.hasOwnProperty(key))
 $('input[name='+key+']').val(sess[key]);
 }
+
+var starttime_epochsecs=sess.start_time;
+var endtime_epochsecs=sess.end_time;
+
+var starttime_millis=starttime_epochsecs*1000;
+var endtime_millis=endtime_epochsecs*1000;
+
+var starttime_dateobject= new Date(starttime_millis);
+var endtime_dateobject= new Date(endtime_millis);
+
+var starttime_day = (starttime_dateobject.getDate() < 10 ? '0' : '') + starttime_dateobject.getDate();
+var starttime_month = (starttime_dateobject.getMonth() < 9 ? '0' : '') + (starttime_dateobject.getMonth() + 1);
+var starttime_year = starttime_dateobject.getFullYear();
+var starttime_hours = starttime_dateobject.getHours();
+var starttime_minutes = (starttime_dateobject.getMinutes() < 10 ? '0' : '') + starttime_dateobject.getMinutes();
+
+var endtime_day = (endtime_dateobject.getDate() < 10 ? '0' : '') + endtime_dateobject.getDate();
+var endtime_month = (endtime_dateobject.getMonth() < 9 ? '0' : '') + (endtime_dateobject.getMonth() + 1);
+var endtime_year = endtime_dateobject.getFullYear();
+var endtime_hours = endtime_dateobject.getHours();
+var endtime_minutes = (endtime_dateobject.getMinutes() < 10 ? '0' : '') + endtime_dateobject.getMinutes();
+
+var startstring=starttime_year+'/'+starttime_month+'/'+starttime_day+' '+starttime_hours+':'+starttime_minutes;
+var endstring=endtime_year+'/'+endtime_month+'/'+endtime_day+' '+endtime_hours+':'+endtime_minutes;
+$('#starttimeid').val(startstring);
+$('#endtimeid').val(endstring);
+
+
+
 }
 
 
@@ -69,8 +112,8 @@ $(document).ready(function() {
         var obj = {
             "session": {
               "name": $('.edit_session_name').val(),
-              "start_time": startTime,
-              "end_time": endTIme,
+              "start_time": Number(new Date(document.getElementById('starttimeid').value))/1000,
+              "end_time": Number(new Date(document.getElementById('endtimeid').value))/1000,
             //   "state": "future",
               "address": $('.edit_session_address').val(),
               "description": $('.edit_session_description').val()
@@ -96,14 +139,14 @@ $(document).ready(function() {
         var obj = {
             "session": {
               "name": $('.create_session_name').val(),
-              "start_time": startTime,
-              "end_time": endTIme,
+              "start_time": Number(new Date(document.getElementById('start_timeid').value))/1000,
+              "end_time": Number(new Date(document.getElementById('end_timeid').value))/1000,
             //   "state": "future",
               "address": $('.create_session_address').val(),
               "description": $('.create_session_description').val()
             }
           }
-
+          console.log(obj)
         if(repeat_session==1)
         {
           var repeat_count = $('.create_session_repeatcount').val();
@@ -182,13 +225,13 @@ $(document).ready(function() {
         $session_name='<td>'+sessionn.name;
                         if(sessionn.state=="active")
                         {
-                        $edit_object='<td><button disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
+                        $edit_object='<td><button style="cursor: not-allowed" disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
                         $end_object='<td><button id="endbutton'+sessionn.id+'" onclick="endfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">End</button>';                            }
 
                         if(sessionn.state=="past")
                         {
-                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" disabled type="button">Edit</button></td>';
-                        $end_object='<td><button disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
+                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" style="cursor: not-allowed" disabled type="button">Edit</button></td>';
+                        $end_object='<td><button style="cursor: not-allowed" disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
                         }
 
                         if(sessionn.state=="future")
@@ -254,22 +297,6 @@ $(document).ready(function() {
                 var redirectpage="home.html";
                 window.location.replace(redirectpage);
                 });
-
-                $(function () {
-                  $('#starttimeid').datetimepicker();
-                  });
-
-                $(function () {
-                  $('#start_timeid').datetimepicker();
-                  });
-
-                $(function () {
-                  $('#endtimeid').datetimepicker();
-                  });
-
-                $(function () {
-                  $('#end_timeid').datetimepicker();
-                  });
 
                 $("#repeatSession").click(function(){
 

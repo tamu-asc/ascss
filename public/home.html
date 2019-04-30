@@ -17,6 +17,27 @@
 .active {
     background-color: grey;
 }
+.btn.btn-sm {
+    padding: .25rem 1.5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}
+
+.btn {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    margin: 0rem;
+    border: 0;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+}
 </style>
 
 <head>
@@ -51,7 +72,6 @@
                         <i class="fas fa-cog text-primary"></i> Profile </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-info"
                         aria-labelledby="navbarDropdownMenuLink-4">
-                        <a class="dropdown-item text-primary" href="#">My account</a>
                         <a class="dropdown-item text-primary" id="logout">Log out</a>
                     </div>
                 </li>
@@ -71,19 +91,21 @@
                 </p>
         </div>
 
-    <button type="button" class="btn btn-dark btn-lg btn-block">Registered Courses</button>
+    <button type="button" id="registeredcourses_button" class="btn btn-dark btn-lg btn-block">Registered Courses</button>
+    <button type="button" id="coursesleading_button" style="display:none" class="btn btn-dark btn-lg btn-block">Courses Leading</button>
+
 
 
     <div class="accordion" id="Studentcoursesection">
         <div class="card">
             <div class="card-header" id="StudentCourseheading1">
                 <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" id="StdViewCourses" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="false" aria-controls="stdcollapseOne">View Courses</button>
+                    <button class="btn btn-link" id="StdViewCourses" type="button" data-toggle="collapse" data-target="#stdcollapseOne" aria-expanded="true" aria-controls="stdcollapseOne">View Courses</button>
                 </h5>
             </div>
 
-            <div id="stdcollapseOne" class="collapse" aria-labelledby="StudentCourseheading1" data-parent="#Studentcoursesection">
-                <div class="card-body table-customise">
+            <div id="stdcollapseOne" class="collapse show" aria-labelledby="StudentCourseheading1" data-parent="#Studentcoursesection">
+                <div class="card-body table-customise" id="CourseCard">
                     <table id="CourseTable" class="table">
                         <thead id="Stdcoursetablehead" class="thead-primary">
                             <tr>
@@ -112,14 +134,14 @@
         <div class="card">
             <div class="card-header" id="SILeaderCourseheading1">
                 <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" id="SIViewCourses" type="button" data-toggle="collapse" data-target="#SIcollapseOne" aria-expanded="false" aria-controls="SIcollapseOne">View Courses</button>
+                    <button class="btn btn-link" id="SIViewCourses" type="button" data-toggle="collapse" data-target="#SIcollapseOne" aria-expanded="true" aria-controls="SIcollapseOne">View Courses</button>
                 <!--    <button class="btn btn-primary btn-sm col-3 float-right" id="Backbutton" type="button" style="display:none">Back</button> !-->
 
                 </h5>
             </div>
 
-            <div id="SIcollapseOne" class="collapse" aria-labelledby="SILeaderCourseheading1" data-parent="#SILeadercoursesection">
-                <div class="card-body table-customise">
+            <div id="SIcollapseOne" class="collapse show" aria-labelledby="SILeaderCourseheading1" data-parent="#SILeadercoursesection">
+                <div class="card-body table-customise" id="SICourseCard">
                     <table id="SICourseTable" class="table">
                         <thead id="SIcoursetablehead" class="thead-primary">
                             <tr>
