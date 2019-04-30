@@ -83,7 +83,8 @@ $(document).ready(function() {
 
                   $("#Studentcoursesection").show();
                   $("#SILeadercoursesection").hide();
-
+                  $("#registeredcourses_button").show();
+                  $("#coursesleading_button").hide();
 
                   });
 
@@ -91,6 +92,8 @@ $(document).ready(function() {
 
                   $("#SILeadercoursesection").show();
                   $("#Studentcoursesection").hide();
+                  $("#registeredcourses_button").hide();
+                  $("#coursesleading_button").show();
 
 
                   });
@@ -98,6 +101,7 @@ $(document).ready(function() {
                     $("#studentnavitem").on("click", function() {
                     $("#sileadernavitem").removeClass("active");
                     $(this).addClass("active");
+
                   });
 
                     $("#sileadernavitem").on("click", function() {
