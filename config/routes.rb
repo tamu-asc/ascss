@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       match "/course/:course/leader" => "course_instructor#create", via: :post
       match "/course/:course/leader_bulk" => "course_instructor#create_bulk", via: :post
       match "/course/:course/leaders" => "course_instructor#index", via: :get
+      match "/course/:course_id/attendance_stats" => "aggregations#aggregate_attendance", via: :post
+      match "/course/:course_id/session_stats" => "aggregations#aggregate_session", via: :post
     end
 
     root 'application#index'
