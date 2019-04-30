@@ -1,8 +1,18 @@
 module CourseSessionHelper
-  def course_session_params
+  SECONDS_IN_WEEK = 60*60*24*7
+
+  def course_session_params(offset_week=0)
     out_params = params.require(:session).permit(:name, :start_time, :end_time, :address, :description)
-    out_params[:start_time] = Time.at(out_params[:start_time])
-    out_params[:end_time] = Time.at(out_params[:end_time])
+    refTime = Time.at(out_params[:start_time])
+    out_params[:start_time] = Time.at(out_params[:start_time] + (offset_week*SECONDS_IN_WEEK))
+    out_params[:end_time] = Time.at(out_params[:end_time] + (offset_week*SECONDS_IN_WEEK))
+    if out_params[:start_time].dst? && !refTime.dst?
+      out_params[:start_time] = out_params[:start_time] - 3600
+      out_params[:end_time] = out_params[:end_time] - 3600
+    elsif !out_params[:start_time].dst? && refTime.dst?
+      out_params[:start_time] = out_params[:start_time] + 3600
+      out_params[:end_time] = out_params[:end_time] + 3600
+    end
     out_params
   end
 
@@ -81,25 +91,43 @@ module CourseSessionHelper
   end
 
   def create_session
-    course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
-    @course_session = Session.new(course_session_params)
-    # @course_session.start_time = @course_session.start_time
-    # @course_session.end_time = @course_session.end_time
-    @course_session.course_instructor = course_instructor
-    @course_session.course_id = params[:course_id]
-    if @course_session.state == 'future'#@course_session.start_time < @course_session.end_time && @course_session.start_time< Time.now
-      if @course_session.save
-        render 'objects/instructor_course_session.json'
-      else
-        @msg = "Error in generating course"
-        @details = @course_session.errors
-        render "objects/msg.json", status: :bad_request
-      end
-    else
+    unless Session.new(course_session_params).state == 'future'
       @msg = "Cannot create past sesions check time entry"
       @details = @course_session.errors
-      render "objects/msg.json", status: :bad_request
+      render "objects/msg.json", status: :bad_request and return
     end
+
+    repeat_count = params[:repeatcount].to_i
+    if repeat_count == 0
+      repeat_count = 1
+    end
+
+    batch = Time.now.to_i.to_s
+
+    course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
+    course = Course.find_by(id: params[:course_id])
+
+    course_sessions = (0..repeat_count-1).to_a.map { |iter|
+      course_session = Session.new(course_session_params(iter))
+      course_session.course_instructor = course_instructor
+      course_session.course = course
+      course_session.batch = batch
+      if course_session.save
+        course_session
+      else
+        nil
+      end
+
+      course_session
+    }
+
+    if repeat_count == 1
+      @course_session = course_sessions.at(0)
+    else
+      @course_sessions = course_sessions
+    end
+
+    render 'objects/instructor_course_session.json'
   end
 
   def update_session
