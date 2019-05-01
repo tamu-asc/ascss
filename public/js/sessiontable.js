@@ -180,6 +180,7 @@ $(document).ready(function() {
                     location.reload()
                 },
                 error: function (xhr, textStatus, errorThrown) {
+                  alert('Error occured while performing the Operation', errorThrown);
                     console.log('Error in Operation',errorThrown);
                 }
             })
@@ -264,6 +265,7 @@ $(document).ready(function() {
                 location.reload()
             },
             error: function (xhr, textStatus, errorThrown) {
+                 alert('Error occured while performing the Operation', errorThrown);
                 console.log('Error in Operation',errorThrown);
             }
         })
@@ -329,7 +331,7 @@ $(document).ready(function() {
         $session_name='<td>'+sessionn.name;
                         if(sessionn.state=="active")
                         {
-                        $edit_object='<td><button id="editbutton'+sessionn.id+'" onclick="editfn(\''+sessionn.id+'\')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#EditModal" type="button">Edit</button>';
+                        $edit_object='<td><button style="cursor: not-allowed" disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm"  type="button">Edit</button></td>';
                         $end_object='<td><button id="endbutton'+sessionn.id+'" onclick="endfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">End</button>';                            }
 
                         if(sessionn.state=="past")
