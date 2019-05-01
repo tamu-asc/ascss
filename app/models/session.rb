@@ -7,6 +7,10 @@ class Session < ApplicationRecord
     s = Time.at(start_time)
     e = Time.at(end_time)
 
+    if s > e
+      return nil
+    end
+
     if t > e
       return 'past'
     elsif t < s

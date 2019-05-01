@@ -475,6 +475,116 @@
           }
         }
       }
+    },
+    "/course/{courseId}/attendance_stats": {
+      "post": {
+        "summary": "Aggregations for attendance stats",
+        "requestBody": {
+          "description": "Get aggregations data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type" : "object",
+                "properties" :{
+                  "aggregate_by": {
+                    "type" : "string",
+                    "description" : "leader/session/student"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "description": "key leader, value leader user name"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggregations list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/session_stats": {
+      "post": {
+        "summary": "Aggregations for session stats",
+        "requestBody": {
+          "description": "Get aggregations data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type" : "object",
+                "properties" :{
+                  "aggregate_by": {
+                    "type" : "string",
+                    "description" : "leader/session"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "description": "key leader, value leader user name"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggregations list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

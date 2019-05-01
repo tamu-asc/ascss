@@ -17,6 +17,10 @@ class Api::CourseSessionController < Api::AuthController
     mark_attendance_student
   end
 
+  def mark_proxy_attendance
+    mark_attendance_instructor
+  end
+
   def show
     show_course_session
   end
