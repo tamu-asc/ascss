@@ -21,8 +21,6 @@ $(document).ready(function () {
                 "password_confirmation": $("#inputPasswordConfirmation").val()
             }
         };
-        window.loginCreds = loginCreds;
-        debugger;
         if (loginCreds["user"]["first_name"] == "" || loginCreds["user"]["last_name"] == "" || loginCreds["user"]["last_name"] == undefined
         || loginCreds["user"]["first_name"] == undefined || loginCreds["user"]["username"] == ""
         || loginCreds["user"]["username"] == undefined ||
@@ -91,6 +89,8 @@ $(document).ready(function () {
       }  else {
         $.post("/api/signup", JSON.stringify(loginCreds), function (data) {
             window.location.assign("/index")
+        }).fail(function(error){
+          alert('please fill out all fields correctly')
         });
       }
     });
