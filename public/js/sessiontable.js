@@ -120,7 +120,10 @@ $(document).ready(function() {
             }
           }
 
-          if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+          var timenow=Number(new Date())/1000;
+
+
+          if( (obj["session"]["start_time"] == obj["session"]["end_time"]) || (obj["session"]["start_time"] <= timenow) || (obj["session"]["end_time"] <= timenow)  || obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined || obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined ||  isNaN(obj["session"]["start_time"]) || obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined || isNaN(obj["session"]["end_time"]) || (obj["session"]["start_time"] > obj["session"]["end_time"]) )
           {
             if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined)
             {
@@ -130,7 +133,7 @@ $(document).ready(function() {
               $('#editsessionflash').hide();
             }
 
-            if(obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined ||  isNaN(obj["session"]["start_time"]))
+            if((obj["session"]["start_time"] == obj["session"]["end_time"]) || obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined ||  isNaN(obj["session"]["start_time"]) || (obj["session"]["start_time"] > obj["session"]["end_time"]) || (obj["session"]["start_time"] <= timenow) )
             {
               $('#editstarttimeflash').show();
             }
@@ -138,7 +141,7 @@ $(document).ready(function() {
               $('#editstarttimeflash').hide();
             }
 
-            if(obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined || isNaN(obj["session"]["end_time"]))
+            if((obj["session"]["start_time"] == obj["session"]["end_time"]) || obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined || isNaN(obj["session"]["end_time"]) || (obj["session"]["start_time"] > obj["session"]["end_time"]) || (obj["session"]["end_time"] <= timenow)  )
             {
               $('#editendtimeflash').show();
             }
@@ -194,7 +197,8 @@ $(document).ready(function() {
               "description": $('.create_session_description').val()
             }
           }
-          console.log(obj)
+          var timenow=Number(new Date())/1000;
+          //console.log(obj)
         if(repeat_session==1)
         {
           var repeat_count = $('.create_session_repeatcount').val();
@@ -204,7 +208,7 @@ $(document).ready(function() {
           redir_url = '/api/leader/course/' + curr_course + '/session/';
         }
 
-        if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+        if( (obj["session"]["start_time"] == obj["session"]["end_time"]) || (obj["session"]["start_time"] <= timenow) || (obj["session"]["end_time"] <= timenow)  || obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined || obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined ||  isNaN(obj["session"]["start_time"]) || obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined || isNaN(obj["session"]["end_time"]) || (obj["session"]["start_time"] > obj["session"]["end_time"]) )
         {
           if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined)
           {
@@ -214,7 +218,7 @@ $(document).ready(function() {
             $('#createsessionflash').hide();
           }
 
-          if(obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined || isNaN(obj["session"]["start_time"]))
+          if((obj["session"]["start_time"] == obj["session"]["end_time"]) || obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined ||  isNaN(obj["session"]["start_time"]) || (obj["session"]["start_time"] > obj["session"]["end_time"]) || (obj["session"]["start_time"] <= timenow) )
           {
             $('#createstarttimeflash').show();
           }
@@ -222,7 +226,7 @@ $(document).ready(function() {
             $('#createstarttimeflash').hide();
           }
 
-          if(obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined ||  isNaN(obj["session"]["end_time"] ))
+          if((obj["session"]["start_time"] == obj["session"]["end_time"]) || obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined || isNaN(obj["session"]["end_time"]) || (obj["session"]["start_time"] > obj["session"]["end_time"]) || (obj["session"]["end_time"] <= timenow)  )
           {
             $('#createendtimeflash').show();
           }
