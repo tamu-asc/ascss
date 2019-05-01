@@ -1,11 +1,11 @@
 module CourseSessionHelper
-  SECONDS_IN_WEEK = 60*60*24*7
+  SECONDS_IN_WEEK = 60 * 60 * 24 * 7
 
   def course_session_params(offset_week=0)
     out_params = params.require(:session).permit(:name, :start_time, :end_time, :address, :description)
     refTime = Time.at(out_params[:start_time])
-    out_params[:start_time] = Time.at(out_params[:start_time] + (offset_week*SECONDS_IN_WEEK))
-    out_params[:end_time] = Time.at(out_params[:end_time] + (offset_week*SECONDS_IN_WEEK))
+    out_params[:start_time] = Time.at(out_params[:start_time] + (offset_week * SECONDS_IN_WEEK))
+    out_params[:end_time] = Time.at(out_params[:end_time] + (offset_week * SECONDS_IN_WEEK))
     if out_params[:start_time].dst? && !refTime.dst?
       out_params[:start_time] = out_params[:start_time] - 3600
       out_params[:end_time] = out_params[:end_time] - 3600
@@ -30,6 +30,11 @@ module CourseSessionHelper
 
   def show_course_session_instructor
     course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
+    if course_instructor.nil?
+      @msg = "Error in finding instructor details"
+      @details = "no records found for the user as instructor for the specified course. check course_id and user_id"
+      render("objects/msg.json", status: :bad_request) && return
+    end
     @course_sessions = Session.where(course_id: params[:course_id], course_instructor: course_instructor).order(:start_time)
     if @course_sessions
       render "objects/instructor_course_session.json"
@@ -43,10 +48,16 @@ module CourseSessionHelper
 
   def show_course_session_student
     @course_student = CourseStudent.find_by(course_id: params[:course_id], user:@user)
-    @course_sessions = Session.where(course_id: params[:course_id])
+    if @course_student.nil?
+      @msg = "Error in fetching student details"
+      @details = "no records found for the user as student for the specified course. check course_id and user_id"
+      render("objects/msg.json", status: :bad_request) && return
+    end
+    @course_sessions = Session.where(course_id: params[:course_id]).order(:start_time)
     @session_attendance_map = {}
-    @course_sessions.each {|session|
-        if @session_attendance_map.key? (session.id)
+    if @course_sessions
+      @course_sessions.each {|session|
+        if @session_attendance_map.key? session.id
           continue
 
         end
@@ -55,9 +66,12 @@ module CourseSessionHelper
         attendance = SessionAttendance.find_by(session: session, course_student: @course_student)
         @session_attendance_map[session.id] = attendance
       }
-    render 'objects/student_course_session'
-    # @session_leader_map = {}
-    #
+      render 'objects/student_course_session'
+    else
+      @msg = "Error in fetching sessions for the course"
+      @details = "sessions for the course are not found please verify the course_id entered"
+      render("objects/msg.json", status: :bad_request) && return
+    end
   end
 
   def mark_attendance_utils (course_session, course_student, silent=true )
@@ -71,7 +85,7 @@ module CourseSessionHelper
     end
 
     session_attendance = SessionAttendance.find_by(session: course_session, course_student: course_student)
-    if !session_attendance.nil?
+    unless session_attendance.nil?
       if silent
         session_attendance
       else
@@ -119,6 +133,10 @@ module CourseSessionHelper
 
   def mark_attendance_student
     @course_session = Session.find_by(course_id: params[:course_id], id: params[:session_id])
+    if @course_session.nil
+      @msg = "No session matching the discription found for the course"
+      render('objects/msg', status: :bad_request) && return
+    end
     @course_student = CourseStudent.find_by(course_id: params[:course_id], user:@user)
     begin
       @session_attendance = mark_attendance_utils(@course_session, @course_student, false)
@@ -135,7 +153,7 @@ module CourseSessionHelper
     if !@course_session.nil?
       render 'objects/instructor_course_session.json'
     else
-      @msg = "Error in updating course"
+      @msg = "Error in fetching the specified session. verify the session_id entered."
       @details = @course_session.errors
       render "objects/msg.json", status: :bad_request
     end
@@ -159,7 +177,7 @@ module CourseSessionHelper
     course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
     course = Course.find_by(id: params[:course_id])
 
-    course_sessions = (0..repeat_count-1).to_a.map { |iter|
+    course_sessions = (0..repeat_count - 1).to_a.map { |iter|
       course_session = Session.new(course_session_params(iter))
       course_session.course_instructor = course_instructor
       course_session.course = course
