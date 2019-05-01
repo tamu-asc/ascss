@@ -120,19 +120,67 @@ $(document).ready(function() {
             }
           }
 
-        $.ajax({
-            url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
-            type: 'PATCH',
-            contentType: "application/json",
-            data: JSON.stringify(obj),
-            dataType: 'json',
-            success: function (data, textStatus, xhr) {
-                location.reload()
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.log('Error in Operation',errorThrown);
+          if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+          {
+            if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined)
+            {
+              $('#editsessionflash').show();
             }
-        })
+            else {
+              $('#editsessionflash').hide();
+            }
+
+            if(obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined ||  isNaN(obj["session"]["start_time"]))
+            {
+              $('#editstarttimeflash').show();
+            }
+            else {
+              $('#editstarttimeflash').hide();
+            }
+
+            if(obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined || isNaN(obj["session"]["end_time"]))
+            {
+              $('#editendtimeflash').show();
+            }
+            else {
+              $('#editendtimeflash').hide();
+            }
+
+            if(obj["session"]["address"] == "" || obj["session"]["address"] == undefined)
+            {
+              $('#editaddressflash').show();
+            }
+            else {
+              $('#editaddressflash').hide();
+            }
+
+
+            if(obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+            {
+              $('#editdescriptionflash').show();
+            }
+            else {
+              $('#editdescriptionflash').hide();
+            }
+
+            alert('please fill out all fields correctly')
+            return
+          } else {
+
+            $.ajax({
+                url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
+                type: 'PATCH',
+                contentType: "application/json",
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    location.reload()
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation',errorThrown);
+                }
+            })
+          }
     })
 
     $('.create_session').click(function() {
@@ -156,6 +204,52 @@ $(document).ready(function() {
           redir_url = '/api/leader/course/' + curr_course + '/session/';
         }
 
+        if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+        {
+          if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined)
+          {
+            $('#createsessionflash').show();
+          }
+          else {
+            $('#createsessionflash').hide();
+          }
+
+          if(obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined || isNaN(obj["session"]["start_time"]))
+          {
+            $('#createstarttimeflash').show();
+          }
+          else {
+            $('#createstarttimeflash').hide();
+          }
+
+          if(obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined ||  isNaN(obj["session"]["end_time"] ))
+          {
+            $('#createendtimeflash').show();
+          }
+          else {
+            $('#createendtimeflash').hide();
+          }
+
+          if(obj["session"]["address"] == "" || obj["session"]["address"] == undefined)
+          {
+            $('#createaddressflash').show();
+          }
+          else {
+            $('#createaddressflash').hide();
+          }
+
+
+          if(obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+          {
+            $('#createdescriptionflash').show();
+          }
+          else {
+            $('#createdescriptionflash').hide();
+          }
+
+          alert('please fill out all fields correctly')
+          return
+        } else {
         $.ajax({
             url: redir_url,
             type: 'POST',
@@ -169,6 +263,10 @@ $(document).ready(function() {
                 console.log('Error in Operation',errorThrown);
             }
         })
+      }
+
+
+
     })
 
 
