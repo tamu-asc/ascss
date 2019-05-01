@@ -13,52 +13,70 @@ module CourseSessionHelper
     else
       @msg = "Error in generating object"
       @details = "sessions for the course are not found"
-      render "objects/msg.json", status: :bad_request and return
+      render("objects/msg.json", status: :bad_request) && return
     end
 
   end
 
   def show_course_session_instructor
     course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
+    if course_instructor.nil?
+      @msg = "Error in finding instructor details"
+      @details = "no records found for the user as instructor for the specified course. check course_id and user_id"
+      render("objects/msg.json", status: :bad_request) && return
+    end
     @course_sessions = Session.where(course_id: params[:course_id], course_instructor: course_instructor).order(:start_time)
     if @course_sessions
       render "objects/instructor_course_session.json"
     else
       @msg = "Error in generating object"
       @details = "no sessions for the instructor under this course are found"
-      render "objects/msg.json", status: :bad_request and return
+      render("objects/msg.json", status: :bad_request) && return
     end
 
   end
 
   def show_course_session_student
     @course_student = CourseStudent.find_by(course_id: params[:course_id], user:@user)
-    @course_sessions = Session.where(course_id: params[:course_id])
+    if @course_student.nil?
+      @msg = "Error in fetching student details"
+      @details = "no records found for the user as student for the specified course. check course_id and user_id"
+      render("objects/msg.json", status: :bad_request) && return
+    end
+    @course_sessions = Session.where(course_id: params[:course_id]).order(:start_time)
     @session_attendance_map = {}
-    @course_sessions.each {|session|
-        if @session_attendance_map.key? (session.id)
+    if @course_sessions
+      @course_sessions.each {|session|
+        if @session_attendance_map.key? session.id
           continue
-
         end
-        # course_instructor = CourseInstructor.find_by(id: session.course_instructor_id)
-        # session.leader = course_instructor
         attendance = SessionAttendance.find_by(session: session, course_student: @course_student)
         @session_attendance_map[session.id] = attendance
       }
-    render 'objects/student_course_session'
-    # @session_leader_map = {}
-    #
+      render 'objects/student_course_session'
+    else
+      @msg = "Error in fetching sessions for the course"
+      @details = "sessions for the course are not found please verify the course_id entered"
+      render("objects/msg.json", status: :bad_request) && return
+    end
   end
 
   def mark_attendance_student
     @course_session = Session.find_by(course_id: params[:course_id], id: params[:session_id])
-    @course_student = CourseStudent.find_by(course_id: params[:course_id], user:@user)
-    @session_attendance = SessionAttendance.find_by(session_id: params[:session_id], course_student: @course_student)
-    if !@session_attendance.nil?
-      @msg = "Attendance already marked"
-      render 'objects/msg', status: :bad_request and return
+    if @course_session.nil
+      @msg = "No session matching the discription found for the course"
+      render('objects/msg', status: :bad_request) && return
     end
-
+    @course_student = CourseStudent.find_by(course_id: params[:course_id], user:@user)
+    if @course_student.nil
+      @msg = "Student not enrolled for the course"
+      render('objects/msg', status: :bad_request) && return
+    end
+    @session_attendance = SessionAttendance.find_by(session_id: params[:session_id], course_student: @course_student)
+    unless @session_attendance.nil?
+      @msg = "Attendance already marked"
+      render('objects/msg', status: :bad_request) && return
+    end
     @session_attendance = SessionAttendance.new
     @session_attendance.session = @course_session
     @session_attendance.in_time = Time.now
@@ -73,7 +91,7 @@ module CourseSessionHelper
     if !@course_session.nil?
       render 'objects/instructor_course_session.json'
     else
-      @msg = "Error in updating course"
+      @msg = "Error in fetching the specified session. verify the session_id entered."
       @details = @course_session.errors
       render "objects/msg.json", status: :bad_request
     end
@@ -85,7 +103,13 @@ module CourseSessionHelper
     @course_session = Session.new(course_session_params)
     # @course_session.start_time = @course_session.start_time
     # @course_session.end_time = @course_session.end_time
-    @course_session.course_instructor = course_instructor
+    if course_instructor.nil?
+      @msg = "Error in finding instructor details in database"
+      @details = @course_session.errors
+      render "objects/msg.json", status: :bad_request
+    else
+      @course_session.course_instructor = course_instructor
+    end
     @course_session.course_id = params[:course_id]
     if @course_session.state == 'future'#@course_session.start_time < @course_session.end_time && @course_session.start_time< Time.now
       if @course_session.save
@@ -118,7 +142,7 @@ module CourseSessionHelper
       # @course_session.end_time = course_session_new.end_time
     else
       @msg = "Check the times you have entered"
-      render "objects/msg.json", status: :bad_request and return
+      render("objects/msg.json", status: :bad_request) && return
     end
     # if @course_session.save
     #   @msg = "session succesfult saved to db."
@@ -144,15 +168,15 @@ module CourseSessionHelper
 
   def end_session
     @course_session = Session.find(params[:session_id])# need to check
-    if @course_session == nil || @course_session.state != "present"
-      @msg = "Error in ending session, not present"
-      render "objects/msg.json", status: :bad_request and return
+    if @course_session == nil || @course_session.state != "active"
+      @msg = "Error in ending session, not active at present"
+      render("objects/msg.json", status: :bad_request) && return
     end
     @course_session.end_time = Time.now
     if @course_session.save
       render 'objects/instructor_course_session.json'
     else
-      @msg = "Error in generating course"
+      @msg = "Error in terminating session"
       @details = @course_session.errors
       render "objects/msg.json", status: :bad_request
     end
