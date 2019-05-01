@@ -297,6 +297,8 @@ $(document).ready(function() {
                 var coursename;
                 $.get('/api/course/'+courseid).then(function(data){
                 coursename = data.course.title;
+                course_code = data.course.code;
+                coursename = course_code + ' - ' + coursename;
 
                 }).fail(function(err) {
                     alert(err.statusCode)
@@ -323,19 +325,19 @@ $(document).ready(function() {
         $session_name='<td>'+sessionn.name;
                         if(sessionn.state=="active")
                         {
-                        $edit_object='<td><button style="cursor: not-allowed" disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" type="button">Edit</button></td>';
+                        $edit_object='<td><button id="editbutton'+sessionn.id+'" onclick="editfn(\''+sessionn.id+'\')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#EditModal" type="button">Edit</button>';
                         $end_object='<td><button id="endbutton'+sessionn.id+'" onclick="endfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">End</button>';                            }
 
                         if(sessionn.state=="past")
                         {
-                        $edit_object='<td><button id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm" style="cursor: not-allowed" disabled type="button">Edit</button></td>';
+                        $edit_object='<td><button style="cursor: not-allowed" disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm"  type="button">Edit</button></td>';
                         $end_object='<td><button style="cursor: not-allowed" disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
                         }
 
                         if(sessionn.state=="future")
                         {
                           $edit_object='<td><button id="editbutton'+sessionn.id+'" onclick="editfn(\''+sessionn.id+'\')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#EditModal" type="button">Edit</button>';
-                          $end_object='<td>';
+                          $end_object='<td><button style="cursor: not-allowed" disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
                         }
 
 
