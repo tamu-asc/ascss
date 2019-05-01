@@ -180,6 +180,7 @@ $(document).ready(function() {
                     location.reload()
                 },
                 error: function (xhr, textStatus, errorThrown) {
+                  alert('Error occured while performing the Operation', errorThrown);
                     console.log('Error in Operation',errorThrown);
                 }
             })
@@ -264,6 +265,7 @@ $(document).ready(function() {
                 location.reload()
             },
             error: function (xhr, textStatus, errorThrown) {
+                 alert('Error occured while performing the Operation', errorThrown);
                 console.log('Error in Operation',errorThrown);
             }
         })
