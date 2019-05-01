@@ -6,6 +6,19 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
+
+  jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+    this.each(function() {
+    $(this).css("position","relative");
+    for (var x=1; x<=intShakes; x++) {
+    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+    .animate({left:intDistance}, ((intDuration/intShakes)/2))
+    .animate({left:0}, (((intDuration/intShakes)/4)));
+    }
+    });
+    return this;
+    };
+
 // $('#inputPassword').tooltip({'trigger':'focus', 'title': 'Password tooltip'});
     $("#registerButton").click(function () {
       const expression = /\S+@\S+/;
@@ -84,7 +97,8 @@ $(document).ready(function () {
 
 
 
-        alert('please fill out all fields correctly')
+      //  alert('please fill out all fields correctly')
+      $("#registerbody").shake(3,7,800);
         return
       }  else {
         $.post("/api/signup", JSON.stringify(loginCreds), function (data) {
