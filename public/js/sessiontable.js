@@ -120,19 +120,67 @@ $(document).ready(function() {
             }
           }
 
-        $.ajax({
-            url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
-            type: 'PATCH',
-            contentType: "application/json",
-            data: JSON.stringify(obj),
-            dataType: 'json',
-            success: function (data, textStatus, xhr) {
-                location.reload()
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.log('Error in Operation',errorThrown);
+          if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined || obj["session"]["address"] == "" || obj["session"]["address"] == undefined || obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+          {
+            if(obj["session"]["name"] == "" || obj["session"]["name"] == undefined)
+            {
+              $('#editsessionflash').show();
             }
-        })
+            else {
+              $('#editsessionflash').hide();
+            }
+
+            if(obj["session"]["start_time"] == "" || obj["session"]["start_time"] == undefined)
+            {
+              $('#editstarttimeflash').show();
+            }
+            else {
+              $('#editstarttimeflash').hide();
+            }
+
+            if(obj["session"]["end_time"] == "" || obj["session"]["end_time"] == undefined)
+            {
+              $('#editendtimeflash').show();
+            }
+            else {
+              $('#editendtimeflash').hide();
+            }
+
+            if(obj["session"]["address"] == "" || obj["session"]["address"] == undefined)
+            {
+              $('#editaddressflash').show();
+            }
+            else {
+              $('#editaddressflash').hide();
+            }
+
+
+            if(obj["session"]["description"] == "" || obj["session"]["description"] == undefined)
+            {
+              $('#editdescriptionflash').show();
+            }
+            else {
+              $('#editdescriptionflash').hide();
+            }
+
+            alert('please fill out all fields correctly')
+            return
+          } else {
+
+            $.ajax({
+                url: '/api/leader/course/' + curr_course + '/session/' + curr_session,
+                type: 'PATCH',
+                contentType: "application/json",
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    location.reload()
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation',errorThrown);
+                }
+            })
+          }
     })
 
     $('.create_session').click(function() {
