@@ -20,9 +20,9 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
           @msg = "Leader not found"
           render "objects/msg.json", status: :bad_request and return
         end
-        aggregator = aggregator.where("sessions.course_instructor_id is %d"%course_instructor.id)
+        aggregator = aggregator.where("sessions.course_instructor_id = %d"%course_instructor.id)
       elsif key.to_s == "course"
-        aggregator = aggregator.where("course_students.course_id is %d"%@course.id)
+        aggregator = aggregator.where("course_students.course_id = %d"%@course.id)
       end
     end
 
@@ -94,7 +94,7 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
         end
         aggregator = aggregator.where(course_instructor: course_instructor)
       elsif key.to_s == "course"
-        aggregator = aggregator.where("course_instructors.course_id is %d"%@course.id)
+        aggregator = aggregator.where("course_instructors.course_id = %d"%@course.id)
       end
     end
 
