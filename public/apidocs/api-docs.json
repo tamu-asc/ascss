@@ -213,7 +213,7 @@
 					"type": "int",
 					"description" : "year"
 				  },
-                  "credit" : {
+                  "credits" : {
 					"type": "int",
 					"description" : "no. of credits"
 				  }
@@ -259,7 +259,7 @@
 					"type": "int",
 					"description" : "year"
 				  },
-                  "credit" : {
+                  "credits" : {
 					"type": "int",
 					"description" : "no. of credits"
 				  }
@@ -284,7 +284,18 @@
     },
     "/course/{courseId}/student": {
       "post":{
-        "summary": "Create new course for student",
+        "summary": "Add student to course",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
         "requestBody": {
           "description": "Create new course",
           "required": true,
@@ -304,7 +315,7 @@
         },
         "responses": {
           "200": {
-            "description": "succes flag",
+            "description": "success flag",
             "content": {
               "application/json": {
                 "schema": {
@@ -318,7 +329,18 @@
     },
     "/course/{courseId}/student_bulk": {
       "post":{
-        "summary": "Create new course for student",
+        "summary": "Add student to course bulk call",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
         "requestBody": {
           "description": "Create new course",
           "required": true,
@@ -348,7 +370,7 @@
         },
         "responses": {
           "200": {
-            "description": "succes flag",
+            "description": "success flag",
             "content": {
               "application/json": {
                 "schema": {
@@ -362,7 +384,18 @@
     },
     "/course/{courseId}/leader_bulk": {
       "post":{
-        "summary": "Create new course for student",
+        "summary": "Add leader to course bulk call",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
         "requestBody": {
           "description": "Create new course",
           "required": true,
@@ -392,7 +425,7 @@
         },
         "responses": {
           "200": {
-            "description": "succes flag",
+            "description": "success flag",
             "content": {
               "application/json": {
                 "schema": {
@@ -406,7 +439,18 @@
     },
     "/course/{courseId}/leader": {
       "post":{
-        "summary": "Create new course for student",
+        "summary": "Add leader to course",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "courseId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID for the course"
+          }
+        ],
         "requestBody": {
           "description": "Create new course",
           "required": true,
@@ -426,7 +470,7 @@
         },
         "responses": {
           "200": {
-            "description": "succes flag",
+            "description": "success flag",
             "content": {
               "application/json": {
                 "schema": {
