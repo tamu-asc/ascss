@@ -1,11 +1,11 @@
 module CourseSessionHelper
-  SECONDS_IN_WEEK = 60*60*24*7
+  SECONDS_IN_WEEK = 60 * 60 * 24 * 7
 
   def course_session_params(offset_week=0)
     out_params = params.require(:session).permit(:name, :start_time, :end_time, :address, :description)
     refTime = Time.at(out_params[:start_time])
-    out_params[:start_time] = Time.at(out_params[:start_time] + (offset_week*SECONDS_IN_WEEK))
-    out_params[:end_time] = Time.at(out_params[:end_time] + (offset_week*SECONDS_IN_WEEK))
+    out_params[:start_time] = Time.at(out_params[:start_time] + (offset_week * SECONDS_IN_WEEK))
+    out_params[:end_time] = Time.at(out_params[:end_time] + (offset_week * SECONDS_IN_WEEK))
     if out_params[:start_time].dst? && !refTime.dst?
       out_params[:start_time] = out_params[:start_time] - 3600
       out_params[:end_time] = out_params[:end_time] - 3600
@@ -85,7 +85,7 @@ module CourseSessionHelper
     end
 
     session_attendance = SessionAttendance.find_by(session: course_session, course_student: course_student)
-    if !session_attendance.nil?
+    unless session_attendance.nil?
       if silent
         session_attendance
       else
@@ -177,7 +177,7 @@ module CourseSessionHelper
     course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user: @user)
     course = Course.find_by(id: params[:course_id])
 
-    course_sessions = (0..repeat_count-1).to_a.map { |iter|
+    course_sessions = (0..repeat_count - 1).to_a.map { |iter|
       course_session = Session.new(course_session_params(iter))
       course_session.course_instructor = course_instructor
       course_session.course = course
