@@ -6,14 +6,6 @@ var startTime = 1558297380;
 var endTIme =  1558300980;
 
 function markfn(session_id) {
-        // $.post(, function (data) {
-        // // document.getElementById('markbutton'+session_id).disabled = true;
-          
-        // },function(err) {
-           
-        // }
-        //  )
-
 
          $.ajax({
             url: "/api/student/course/" +  curr_course  + "/session/" + session_id + "/mark_attendance",
@@ -75,21 +67,6 @@ $(document).ready(function() {
                 }).fail(function(err){
                     alert('error while fetching course details ')
                 })
-//
-                
-
-/*
-                $.get('/api/course/'+courseid).then(function(data){
-                coursename = data.course.title;
-
-                }).fail(function(err) {
-                    alert(err.statusCode)
-                    console.log(err)
-                })
-
-
-*/
-          //      var sessionfilename="js/StdSession" + courseid+".json";
 
                 $.get('/api/student/course/'+courseid + '/sessions').then(function(data){
                     sessions = data.sessions;
@@ -113,8 +90,12 @@ $(document).ready(function() {
 
                         if(sessionn.state=="past")
                         {
-                        //$mark_attendance_object='<td><button disabled id="markbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">Mark</button></td>';
-                          $mark_attendance_object='<td style="color:red"><b>Not Available</b>';
+
+                            if(!sessionn.hasOwnProperty('attendance')) {
+                                $mark_attendance_object='<td style="color:red"><b>Not Available</b>';
+                                    } else {
+                                        $mark_attendance_object='<td style="color:green;"><b>In time: '+new Date(sessionn.attendance.in_time * 1000).toLocaleString() +'</b>';        
+                                    }
                         }
 
                         if(sessionn.state=="future")
@@ -126,7 +107,6 @@ $(document).ready(function() {
                         var starttime = new Date(0);
                         starttime.setUTCSeconds(utcSeconds_starttime);
                         starttime=starttime.toLocaleString();
-                        //starttime=starttime.toString().substring(4,21);
 
 
 
@@ -134,11 +114,8 @@ $(document).ready(function() {
                         var endtime = new Date(0);
                         endtime.setUTCSeconds(utcSeconds_endtime);
                         endtime=endtime.toLocaleString();
-                        //endtime=endtime.toString().substring(4,21);
 
 
-                        //$('#SISessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
-                        //.append($("<th>").append(sessionn.name))
                          $('#StdSessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
                             .append($session_name)
                             .append($("<td>").append(starttime))

@@ -23,6 +23,10 @@
     line-height: 1.5;
     border-radius: 1.2rem;
 }
+.form-control:disabled, .form-control[readonly] {
+    background-color: white;
+    opacity: 1;
+}
 </style>
 
 <head>
@@ -73,22 +77,35 @@
 	  <div class="modal-body">
 		<form id="sessionform">
         <div class="form-group">
-        <label for="Session-Name" class="col-form-label ">Session Name:</label>    <input class="form-control form-control-lg edit_session_name" type="text" name="name">
+        <label for="Session-Name" class="col-form-label ">Session Name:</label>
+        <p id="editsessionflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid session</p>
+        <input class="form-control form-control-lg edit_session_name" type="text" name="name">
         </div>
+
         <div class="form-group">
         <label for="start-time" class="col-form-label">Start Time:</label>
-		    <input id="starttimeid" class="starttimeid form-control form-control-lg edit_session_start_time" type="text" name="start_time">
+        <p id="editstarttimeflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid start time</p>
+		    <input id="starttimeid" class="starttimeid form-control form-control-lg edit_session_start_time" type="text" name="start_time" readonly="true">
         </div>
+
+
         <div class="form-group">
         <label for="end-time" class="control-label">End Time:</label>
-		    <input id="endtimeid" class="endtimeid form-control form-control-lg edit_session_end_time" type="text" name="end_time">
+        <p id="editendtimeflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid end time</p>
+		    <input id="endtimeid" class="endtimeid form-control form-control-lg edit_session_end_time" type="text" name="end_time" readonly="true">
         </div>
+
+
         <div class="form-group">
         <label for="address" class="col-form-label">Address:</label>
+        <p id="editaddressflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid address</p>
         <input class="form-control form-control-lg edit_session_address" type="text" name="address">
         </div>
+
+
         <div class="form-group">
         <label for="description" class="col-form-label">Description:</label>
+        <p id="editdescriptionflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid description</p>
         <input class="form-control form-control-lg edit_session_description" type="text" name="description">
         </div>
 		</form>
@@ -116,25 +133,35 @@
 
 	  <div class="modal-body">
 		<form id="sessionform">
+
         <div class="form-group">
         <label for="Session-Name" class="col-form-label ">Session Name:</label>
+        <p id="createsessionflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid session</p>
         <input class="form-control form-control-lg create_session_name" type="text" name="name">
         </div>
+
         <div class="form-group">
         <label for="start-time" class="col-form-label ">Start Time:</label>
-        <input id="start_timeid" class="starttimeid form-control form-control-lg create_session_start_time" type="text" name="start_time">
+        <p id="createstarttimeflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid start time</p>
+        <input id="start_timeid" class="starttimeid form-control form-control-lg create_session_start_time" type="text" name="start_time" readonly="true">
         </div>
+
         <div class="form-group">
         <label for="end-time" class="control-label">End Time:</label>
-        <input id="end_timeid" class="endtimeid form-control form-control-lg create_session_end_time" type="text" name="end_time">
+        <p id="createendtimeflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid end time</p>
+        <input id="end_timeid" class="endtimeid form-control form-control-lg create_session_end_time" type="text" name="end_time" readonly="true">
         </div>
+
         <div class="form-group">
         <label for="address" class="col-form-label">Address:</label>
+        <p id="createaddressflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid address</p>
         <input class="form-control form-control-lg create_session_address" type="text" name="address">
         </div>
+
         <div class="form-group">
         <label for="description" class="col-form-label">Description:</label>
-		    <input class="form-control form-control-lg create_session_description" type="text" name="description">
+        <p id="createdescriptionflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid description</p>
+        <input class="form-control form-control-lg create_session_description" type="text" name="description">
         </div>
 
         <div class="form-check">
