@@ -11,7 +11,9 @@
     <link href="css/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="application/javascript" src="./js/jquery.form.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script
     <script type="application/javascript" src="./js/bootstrap.min.js"></script>
+
     <link href="css/floatForm.css" rel="stylesheet">
     <script type="application/javascript" src="./js/register.js"></script>
 
@@ -64,8 +66,12 @@
         </div>
 
         <div class="form-label-group">
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+            data-toggle="tooltip" data-placement="top" data-trigger="focus hover"	 title="Password should contain atleast one uppercase, lowercase, digit (min 8 characters). No special characters allowed."required>
             <label for="inputPassword">Password</label>
+            <!-- <p style="font-size:10px;color:dark">
+
+          </p> -->
         </div>
 
         <div class="form-label-group">
