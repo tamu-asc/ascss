@@ -60,21 +60,73 @@ module CourseSessionHelper
     #
   end
 
+  def mark_attendance_utils (course_session, course_student, silent=true )
+    if course_student == nil
+      if silent
+        nil
+      else
+        raise 'Course student invalid'
+      end
+      return
+    end
+
+    session_attendance = SessionAttendance.find_by(session: course_session, course_student: course_student)
+    if !session_attendance.nil?
+      if silent
+        session_attendance
+      else
+        raise 'Already present'
+      end
+      return
+    end
+
+    session_attendance = SessionAttendance.new
+    session_attendance.session = course_session
+    session_attendance.in_time = Time.now
+    session_attendance.course_student = course_student
+
+    if session_attendance.save!
+      session_attendance
+    elsif silent
+      nil
+    else
+      raise 'Unable to save attendance'
+    end
+  end
+
+  def mark_attendance_instructor
+    @course_session = Session.find_by(course_id: params[:course_id], id: params[:session_id])
+    @course_instructor = CourseInstructor.find_by(course_id: params[:course_id], user:@user)
+
+    if @course_session.course_instructor.id != @course_instructor.id
+      @msg = "Attempt to mark attendance for session not owned"
+      render 'objects/msg', status: :forbidden and return
+    end
+
+    usernames = params[:usernames]
+    if usernames.nil?
+      usernames = [params[:username]]
+    end
+
+    attendance = usernames.map do |username|
+      course_student = CourseStudent.find_by(course_id: params[:course_id], username: username)
+      mark_attendance_utils @course_session, course_student
+    end
+
+    @msg = "Attendance marked for valid students"
+    render 'objects/msg', status: :ok and return
+  end
+
   def mark_attendance_student
     @course_session = Session.find_by(course_id: params[:course_id], id: params[:session_id])
     @course_student = CourseStudent.find_by(course_id: params[:course_id], user:@user)
-    @session_attendance = SessionAttendance.find_by(session_id: params[:session_id], course_student: @course_student)
-    if !@session_attendance.nil?
-      @msg = "Attendance already marked"
-      render 'objects/msg', status: :bad_request and return
-    end
-
-    @session_attendance = SessionAttendance.new
-    @session_attendance.session = @course_session
-    @session_attendance.in_time = Time.now
-    @session_attendance.course_student = @course_student
-    if @session_attendance.save
+    begin
+      @session_attendance = mark_attendance_utils(@course_session, @course_student, false)
       render 'objects/student_course_session'
+    rescue Exception => e
+      @msg = "Attendance mark exception"
+      @details = e.message
+      render 'objects/msg', status: :bad_request and return
     end
   end
 
@@ -172,7 +224,7 @@ module CourseSessionHelper
 
   def end_session
     @course_session = Session.find(params[:session_id])# need to check
-    if @course_session == nil || @course_session.state != "present"
+    if @course_session == nil || @course_session.state != "active"
       @msg = "Error in ending session, not present"
       render "objects/msg.json", status: :bad_request and return
     end
