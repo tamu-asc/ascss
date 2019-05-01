@@ -133,7 +133,7 @@ module CourseSessionHelper
 
   def mark_attendance_student
     @course_session = Session.find_by(course_id: params[:course_id], id: params[:session_id])
-    if @course_session.nil
+    if @course_session.nil?
       @msg = "No session matching the discription found for the course"
       render('objects/msg', status: :bad_request) && return
     end
