@@ -47,27 +47,32 @@
 
         <div class="form-label-group">
             <input type="text" id="firstName" class="form-control" placeholder="First Name" required autofocus>
+            <p id="firstnameflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Firstname cannot be empty</p>
             <label for="firstName">First Name</label>
         </div>
 
         <div class="form-label-group">
             <input type="text" id="lastName" class="form-control" placeholder="Last Name" required autofocus>
+            <p id="lastnameflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Lastname cannot be empty</p>
             <label for="lastName">Last Name</label>
         </div>
 
         <div class="form-label-group">
             <input type="text" id="userName" class="form-control" placeholder="Username" required autofocus>
+            <p id="usernameflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Username cannot be empty</p>
             <label for="userName">Username</label>
         </div>
 
         <div class="form-label-group">
             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <p id="emailflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid email-address</p>
             <label for="inputEmail">Email address</label>
         </div>
 
         <div class="form-label-group">
             <input type="password" id="inputPassword" class="form-control" placeholder="Password"
             data-toggle="tooltip" data-placement="top" data-trigger="focus hover"	 title="Password should contain atleast one uppercase, lowercase, digit (min 8 characters). No special characters allowed."required>
+            <p id="passwordflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Enter valid password.Password should contain atleast one uppercase, lowercase, digit (min 8 characters). No special characters allowed.</p>
             <label for="inputPassword">Password</label>
             <!-- <p style="font-size:10px;color:dark">
 
@@ -77,6 +82,7 @@
         <div class="form-label-group">
             <input type="password" id="inputPasswordConfirmation" class="form-control"
                 placeholder="Password Confirmation" required>
+            <p id="passwordconfirmflash" style="font-size:15px;color:red;display:none;margin-bottom: 0.5em">Passwords don't match</p>
             <label for="inputPasswordConfirmation">Password Confirmation</label>
         </div>
 
