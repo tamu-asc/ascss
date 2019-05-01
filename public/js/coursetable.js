@@ -37,7 +37,7 @@ $(document).ready(function() {
                          .append($("<td>").append(course.semester))
                          .append($("<td>").append(course.year))
                          .append($("<td>").append(course.credits))
-                         .append($('<td><button onclick="std(\''+ course.id + '\')" class="btn btn-primary btn-sm" type="button">View</button>')));
+                         .append($('<td><button onclick="std(\''+ course.course_id + '\')" class="btn btn-primary btn-sm" type="button">View</button>')));
                          //.append($('<td><button onclick="c(\''+ course.id + '\',\'' + course.title + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
                  });
              }}).fail(function(err){
@@ -65,7 +65,7 @@ $(document).ready(function() {
                             .append($("<td>").append(course.semester))
                             .append($("<td>").append(course.year))
                             .append($("<td>").append(course.credits))
-                            .append($('<td><button onclick="c(\''+ course.id + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
+                            .append($('<td><button onclick="c(\''+ course.course_id + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
                             //.append($('<td><button onclick="c(\''+ course.id + '\',\'' + course.title + '\')" class="viewbutton btn btn-primary btn-sm" type="button">View</button>')));
                     });
                 }}).fail(function(err){
