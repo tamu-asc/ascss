@@ -1,3 +1,4 @@
+
 module CourseSessionHelper
   SECONDS_IN_WEEK = 60 * 60 * 24 * 7
 
