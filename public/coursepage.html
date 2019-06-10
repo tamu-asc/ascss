@@ -27,6 +27,9 @@
     background-color: white;
     opacity: 1;
 }
+.entry-hover-class:hover {
+    cursor: pointer;
+}
 </style>
 
 <head>
@@ -121,6 +124,41 @@
 </div>
 
 <!-- Modal -->
+    <div class="modal fade" id="AttendanceModal" tabindex="-1" role="dialog" aria-labelledby="AttendanceModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AttendanceModalTitle">Add Manual Attendance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="sessionform">
+                        <div class="form-group">
+                            <label for="User-Name" class="col-form-label ">User Name: (Enter to add to list)</label>
+                            <input id="attn_username_id" class="form-control form-control-lg add_user_name_attn" type="text" name="name">
+                        </div>
+
+                        <div>
+                            <label for="User-Name-List" class="col-form-label">List of User Names:</label>
+                            <p id="attn_username_list_id"></p>
+                        </div>
+
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger update_attendacne">Update</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<!-- Modal -->
 <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="CreateModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -199,13 +237,12 @@
           <div class="table-responsive" style="margin-top: 70px;">
             <table class="table table-striped table-hover table-bordered">
               <thead id="SIsessiontablehead" thead class="thead-dark">
-                <tr>
+                <tr align="center">
                 <th scope="col">SESSION</th>
                 <th scope="col">STARTS</th>
                 <th scope="col">ENDS</th>
                 <th scope="col">WHERE</th>
-                <th scope="col">EDIT SESSION</th>
-                <th scope="col">END SESSION</th>
+                <th scope="col">ACTION</th>
                 </tr>
               </thead>
               <tbody id="SISessionPageBody">
