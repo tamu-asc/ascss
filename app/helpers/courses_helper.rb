@@ -1,6 +1,6 @@
 module CoursesHelper
   def course_params
-    params.require(:course).permit(:title, :semester, :year, :credits, :code)
+    params.require(:course).permit(:title, :semester, :year, :credits, :code, :active)
   end
 
 

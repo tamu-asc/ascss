@@ -25,3 +25,17 @@
     vertical-align: middle;
     user-select: none;
 }
+.form-control:disabled, .form-control[readonly] {
+    background-color: white;
+    opacity: 1;
+}
+.entry-hover-class:hover {
+    cursor: pointer;
+}
+.blue-button {
+    color: blue!important;
+}
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}

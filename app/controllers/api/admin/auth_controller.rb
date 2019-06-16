@@ -1,4 +1,4 @@
-class Api::Admin::AuthController < Api::ApplicationController
+class Api::Admin::AuthController < Api::AuthController
   include JwtHelper
 
   before_action :authenticate_admin
@@ -17,34 +17,33 @@ class Api::Admin::AuthController < Api::ApplicationController
   # end
   #
   def authenticate_admin
-    # unless auth_present?
-    #
-    # end
-    begin
-      jwt_token = token
-      puts jwt_token
-      payload = decode(jwt_token)
+    unless @user && @user.role.to_s == "admin"
+      begin
+        jwt_token = token
+        puts jwt_token
+        payload = decode(jwt_token)
 
-      issued_time = payload["issued"]
-      # todo: remove this comment
-      if issued_time == nil# || Time.now.to_i - issued_time >= 600
-        @msg = "error authenticating token "
-        @details = "Token expired, please issue a new one"
-        render "objects/msg.json", status: :unauthorized and return
-      end
-      user_id = payload["user"]
-      @user = User.find(user_id)
-      unless @user && @user.role.to_s == "admin"
-        if params.has_key?(:redirect)
-          redirect_to root_url
-        else
-          raise 'user not found or role not admin'
+        issued_time = payload["issued"]
+        # todo: remove this comment
+        if issued_time == nil# || Time.now.to_i - issued_time >= 600
+          @msg = "error authenticating token "
+          @details = "Token expired, please issue a new one"
+          render "objects/msg.json", status: :unauthorized and return
         end
+        user_id = payload["user"]
+        @user = User.find(user_id)
+        unless @user && @user.role.to_s == "admin"
+          if params.has_key?(:redirect)
+            redirect_to root_url
+          else
+            raise 'user not found or role not admin'
+          end
+        end
+      rescue Exception => e
+        @msg = "error authenticating token "
+        @details = e.message
+        render "objects/msg.json", status: :unauthorized
       end
-    rescue Exception => e
-      @msg = "error authenticating token "
-      @details = e.message
-      render "objects/msg.json", status: :unauthorized
     end
   end
 
