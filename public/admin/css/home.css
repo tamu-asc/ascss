@@ -39,3 +39,7 @@
     content:"*";
     color:red;
 }
+button[type=submit]:disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
