@@ -1,9 +1,6 @@
 .pad-15{
     padding: 15px;
 }
-.active {
-    background-color: grey;
-}
 .btn.btn-sm {
     padding: .25rem 1.5rem;
     font-size: .875rem;

@@ -35,7 +35,6 @@ homeApp.controller('HomeController', ['$scope', '$http', '$window', function($sc
             url: "/api/admin/course/" + course.id,
             data: course
         }).then(function (resp) {
-            console.log(JSON.stringify(resp));
         }, function (err) {
             console.error(JSON.stringify(err));
         });
@@ -88,7 +87,6 @@ homeApp.controller('HomeController', ['$scope', '$http', '$window', function($sc
         $scope.displayCourses = displayCourses;
     };
     $scope.gotoCourse = function (course) {
-        alert("Clicked course " + course.title);
         $window.location.href = "/admin/coursepage?course=" + course.id;
     };
 
@@ -108,7 +106,6 @@ homeApp.controller('HomeController', ['$scope', '$http', '$window', function($sc
     }).then(function (resp) {
         $scope.activeCourses = resp["data"]["courses"];
         $scope.refreshDisplayCourses();
-        console.log(JSON.stringify($scope.displayCourses));
     }, function (err) {
         $window.location.href = "/login"
     });
@@ -120,7 +117,6 @@ homeApp.controller('HomeController', ['$scope', '$http', '$window', function($sc
     }).then(function (resp) {
         $scope.inactiveCourses = resp["data"]["courses"];
         $scope.refreshDisplayCourses();
-        console.log(JSON.stringify($scope.displayCourses));
     }, function (err) {
         $window.location.href = "/login"
     });

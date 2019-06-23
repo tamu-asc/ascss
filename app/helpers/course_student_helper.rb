@@ -1,7 +1,9 @@
 module CourseStudentHelper
 
   def show_course_student
-    @course_students = CourseStudent.where user: @user
+    @course_students = CourseStudent.joins(:course)
+    @course_students = @course_students.where user: @user
+    @course_students = @course_students.where "courses.active = true"
     if @course_students
       render "objects/course_student"
     else
