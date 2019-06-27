@@ -65,9 +65,11 @@ homeApp.controller('CoursepageController', [
         };
         $scope.user = {};
         $scope.studentUploadList = [];
+        $scope.leaderUploadList = [];
         $scope.courseId = parseInt($scope.getUrlParameter("course"));
         $scope.course = {};
         $scope.students = [];
+        $scope.leaders = [];
 
         $scope.logout = function () {
             $http({
@@ -120,10 +122,16 @@ homeApp.controller('CoursepageController', [
             }
             return ret;
         };
+
         $scope.clearFilesInput = function () {
             $scope.studentFile = {};
             angular.element("input[type='file']").val(null);
         };
+
+
+        /*
+         * Student Related calls
+         */
         $scope.uploadStudentsFile = function () {
             var fileName = $scope.studentFile.name;
             if (!fileName.endsWith(".csv")) {
@@ -198,6 +206,84 @@ homeApp.controller('CoursepageController', [
             });
         };
 
+
+        /*
+         * Leader Related calls
+         */
+        $scope.uploadLeadersFile = function () {
+            var fileName = $scope.leaderFile.name;
+            if (!fileName.endsWith(".csv")) {
+                $window.alert("Passed File Not a CSV");
+                $('#leaderCSVFile').val('');
+                return;
+            }
+            var file = new $window.FileReader();
+            file.onload = function(theFile) {
+                try {
+                    // console.log(theFile.target.result);
+                    const csv = processCSV(theFile.target.result);
+                    let uNameIndex = getUsernameHeaderIndex(csv[0]);
+                    if (uNameIndex === -1) {
+                        throw new Error("Column UIN/Username not found");
+                    }
+                    let usernames = getCSVColumnByIndex(csv.splice(1), uNameIndex);
+                    addLeadersToListUtil(usernames);
+                } catch (e) {
+                    $window.alert("Error in parsing CSV: " + e.toLocaleString());
+                } finally {
+                    $scope.clearFilesInput();
+                    $scope.$apply();
+                }
+            };
+            file.readAsText($scope.leaderFile);
+        };
+        const addLeadersToListUtil = function (vals) {
+            for (i in vals) {
+                const val = vals[i];
+                if ($scope.leaderUploadList.indexOf(val) == -1) {
+                    $scope.leaderUploadList.push(val);
+                }
+            }
+        };
+        $scope.addLeaderToList = function () {
+            console.log($scope.leader.username);
+            addLeadersToListUtil([$scope.leader.username]);
+            $scope.leader.username = "";
+        };
+        $scope.resetLeaderInput = function () {
+            $scope.leaderUploadList = [];
+            $scope.clearFilesInput();
+        };
+        const getLeaderCreationBackendData = function () {
+            let data = {"users":[]};
+            for (const i in $scope.leaderUploadList) {
+                data["users"].push({"username":$scope.leaderUploadList[i]});
+            }
+            return data;
+        };
+        const appendCreatedLeadersToList = function (leaders) {
+            let presentUsernames = $scope.leaders.map(function (data) {return data.username;});
+            for (const i in leaders) {
+                if (presentUsernames.indexOf(leaders[i].username) === -1) {
+                    $scope.leaders.push(leaders[i]);
+                    presentUsernames.push(leaders[i].users);
+                }
+            }
+        };
+        $scope.addLeadersToCourse = function () {
+            $http({
+                method: "POST",
+                url: "/api/admin/course/" + $scope.courseId + "/leader_bulk",
+                data: getLeaderCreationBackendData()
+            }).then(function (resp) {
+                appendCreatedLeadersToList(resp["data"]["courses"]);
+                $scope.resetLeaderInput();
+                $scope.$apply();
+            }, function (err) {
+                $window.alert("Error Uploading leaders to course " + err.toLocaleString());
+            });
+        };
+
         $http({
             method: "GET",
             url: "/api/user"
@@ -224,6 +310,16 @@ homeApp.controller('CoursepageController', [
             $scope.students = resp["data"]["courses"];
         }, function (err) {
             $window.alert("Course students not found " + $scope.courseId);
+            $scope.home();
+        });
+
+        $http({
+            method: "GET",
+            url: "/api/admin/course/" + $scope.courseId + "/leaders"
+        }).then(function (resp) {
+            $scope.leaders = resp["data"]["courses"];
+        }, function (err) {
+            $window.alert("Course leaders not found " + $scope.courseId);
             $scope.home();
         });
     }]);

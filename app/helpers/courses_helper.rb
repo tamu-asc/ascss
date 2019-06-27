@@ -6,7 +6,7 @@ module CoursesHelper
 
   def show_course
     @course = Course.find_by_id(params[:id])
-    if @course
+    if @course && (@user.role == "admin" || @course.active)
       render 'objects/course.json'
     else
       @msg = "Error in viewing course"

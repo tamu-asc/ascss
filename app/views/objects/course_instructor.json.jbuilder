@@ -4,8 +4,11 @@ def course_instructor_format(json, course_instructor)
   json.code course_instructor.course.code
   json.username course_instructor.username
 
-  unless course_instructor.user.blank?
+  unless course_instructor.user.blank? || (@user.role == "admin" && course_instructor.user.id == @user.id)
     json.user_id course_instructor.user.id
+    json.first_name course_instructor.user.first_name
+    json.last_name course_instructor.user.last_name
+    json.email course_instructor.user.email
   end
 
   if @raw == nil

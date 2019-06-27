@@ -100,32 +100,34 @@
                 </div>
 
                 <div class="modal-body">
-                    <form name="leaderForm" nag-submit="createNewCourse(course)" novalidate>
+                    <form name="leaderForm" novalidate>
 
                         <div class="form-group">
-                            <label for="Leader-Username" class="col-form-label ">Username:</label>
-                            <input class="form-control form-control-lg create_course_code" type="text" name="code" nga-model="course.code" required>
+                            <label for="Leader-Username" class="col-form-label ">Username: (press enter to add to list)</label>
+                            <input class="form-control create_course_code" type="text" name="code" ng-enter-key="addLeaderToList()" ng-model="leader.username" required>
                         </div>
-                        <div class="form-group">
+                        <div>
                             <label for="Leader-Bulk-Usernames" class="col-form-label ">Or Upload a CSV:</label><br/>
-                            <input type = "file" file-model = "myFile"/>
-                            <button ng-click = "uploadFile()">Upload</button>
+                            <input type="file" accept=".csv" id="leaderCSVFile" file-model="leaderFile"/>
+                            <button class="float-right" ng-click="uploadLeadersFile()">Add to List</button>
                         </div>
+                        <hr/>
 
                         <div>
-                            <label for="Leader-Usernames-List" class="col-form-label ">Usernames to be added:</label>
-                            <p id="attn_username_list_id">1231324<br/>23434</p>
+                            <label for="Leader-Usernames-List" class="col-form-label "><b>Usernames to be added:</b></label>
+                            <div ng-repeat="leader in leaderUploadList">
+                                {{leader}}
+                            </div>
                         </div>
 
-                        <div class="modal-footer">
+                        <div class="float-right modal-footear">
                             <button type="submit" class="btn btn-primary create_session" data-toggle="modal"
-                                    data-target="#CreateModal" nag-disabled="courseForm.$invalid">Create</button>
+                                    data-target="#AddLeaders" ng-disabled="!leaderUploadList.length" ng-click="addLeadersToCourse()">Upload</button>
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                         </div>
                     </form>
 
                 </div>
-
             </div>
         </div>
     </div>
@@ -188,7 +190,7 @@
 
                     <div class="tab-pane fade" id="pills-leader" role="tabpanel" aria-labelledby="leader-tab">
                         <h2><button type="button" class="blue-button btn btn-link btn-sm pull-right float-right" data-toggle="modal"
-                                    data-target="#AddLeaders">+ Add Leaders
+                                    ng-click="resetLeaderInput()" data-target="#AddLeaders">+ Add Leaders
                         </button></h2>
                         <button type="button" class="btn btn-dark btn-lg btn-block">Enrolled Leaders</button>
                         <div id="leaders_div_id" class="collapse show" aria-labelledby="Leaderheading1"
@@ -202,16 +204,10 @@
                                         <th scope="col">EMAIL</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
-                                    <tr align="center" ngASDF-repeat="student in displayLeaders">
-                                        <td>1200342</td>
-                                        <td>Utkarsh Chanchlani</td>
-                                        <td>utkarsh@gmail.com</td>
-                                        <td><button class="btn btn-primary btn-sm" type="button" ng-click="gotoLeader(leader)">See Stats</button></td>
-                                    </tr>
-                                    <tr align="center" ngASDF-repeat="leader in displayLeaders">
-                                        <td>1281920</td>
-                                        <td></td>
-                                        <td></td>
+                                    <tr align="center" ng-repeat="leader in leaders">
+                                        <td>{{leader.username}}</td>
+                                        <td>{{leader.first_name}} {{leader.last_name}}</td>
+                                        <td>{{leader.email}}</td>
                                         <td><button class="btn btn-primary btn-sm" type="button" ng-click="gotoLeader(leader)">See Stats</button></td>
                                     </tr>
                                     </thead>
@@ -221,6 +217,7 @@
                         </div>
 
                     </div>
+
                     <div class="tab-pane fade" id="pills-statistics" role="tabpanel" aria-labelledby="statistics-tab">Stats</div>
                 </div>
             </div>
