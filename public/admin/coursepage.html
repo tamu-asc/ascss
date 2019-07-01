@@ -139,17 +139,17 @@
                 <div class="nav-scroller bg-white box-shadow">
                     <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
                         <li class="nav-item width-33-per">
-                            <a class="nav-link active" id="pills-student-tab" data-toggle="pill" href="#pills-student"
+                            <a class="nav-link" ng-class="{active: activeView=='student'}" ng-click="refreshView('student')" id="pills-student-tab" data-toggle="pill" href="#student"
                                role="tab"
                                aria-controls="pills-student" aria-selected="true">Students</a>
                         </li>
                         <li class="nav-item width-33-per">
-                            <a class="nav-link" id="pills-leader-tab" data-toggle="pill" href="#pills-leader"
+                            <a class="nav-link" ng-class="{active: activeView=='leader'}" ng-click="refreshView('leader')" id="pills-leader-tab" data-toggle="pill" href="#leader"
                                role="tab"
                                aria-controls="pills-leader" aria-selected="false">Leaders</a>
                         </li>
                         <li class="nav-item width-33-per">
-                            <a class="nav-link" id="pills-statistics-tab" data-toggle="pill" href="#pills-statistics"
+                            <a class="nav-link" ng-class="{active: activeView=='stats'}" ng-click="refreshView('stats')" id="pills-statistics-tab" data-toggle="pill" href="#stats"
                                role="tab"
                                aria-controls="pills-statistics" aria-selected="false">Statistics</a>
                         </li>
@@ -158,7 +158,7 @@
                 <hr/>
 
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade active show" id="pills-student" role="tabpanel" aria-labelledby="student-tab">
+                    <div class="tab-pane fade" ng-class="{'active show': activeView=='student'}" id="pills-student" role="tabpanel" aria-labelledby="student-tab">
                         <h2><button type="button" class="blue-button btn btn-link btn-sm pull-right float-right" data-toggle="modal"
                                     ng-click="resetStudentInput()" data-target="#AddStudents">+ Add Students
                         </button></h2>
@@ -188,7 +188,7 @@
 
                     </div>
 
-                    <div class="tab-pane fade" id="pills-leader" role="tabpanel" aria-labelledby="leader-tab">
+                    <div class="tab-pane fade" ng-class="{'active show': activeView=='leader'}" id="pills-leader" role="tabpanel" aria-labelledby="leader-tab">
                         <h2><button type="button" class="blue-button btn btn-link btn-sm pull-right float-right" data-toggle="modal"
                                     ng-click="resetLeaderInput()" data-target="#AddLeaders">+ Add Leaders
                         </button></h2>
@@ -211,14 +211,71 @@
                                         <td><button class="btn btn-primary btn-sm" type="button" ng-click="gotoLeader(leader)">See Stats</button></td>
                                     </tr>
                                     </thead>
-                                    <tbody id="LeadersBody"></tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="tab-pane fade" id="pills-statistics" role="tabpanel" aria-labelledby="statistics-tab">Stats</div>
+                    <div class="tab-pane fade" ng-class="{'active show': activeView=='stats'}" id="pills-statistics" role="tabpanel" aria-labelledby="statistics-tab">
+                        <div class="container">
+                            <form action="#" method="post" novalidate="novalidate">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Filter Type<span style="color: red; ">*</span></label>
+                                        <select class="form-control search-slt" ng-model="statsFilterSelected" ng-options="option.value for option in statsFilterTypes track by option.id" ng-change="statsSelectedFilter()">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Grouping<span style="color: red; ">*</span></label>
+                                        <select class="form-control search-slt" ng-model="statsGroupSelected" ng-options="option.value for option in statsGroupTypes track by option.id" ng-change="statsSelectedGroup()">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm" ng-hide="statsUsernameType === ''">
+                                        <label class="col-form-label text-left text-offset-custom w-100">{{statsUsernameType}}</label>
+                                        <input type="text" class="form-control search-slt" ng-model="statsUsername">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Address</label>
+                                        <input type="text" class="form-control search-slt" ng-model="statsAddress">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Start Date</label>
+                                        <input type="date" class="form-control search-slt" ng-model="statsStartDateSelected">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">End Date</label>
+                                        <input type="date" class="form-control search-slt" ng-model="statsEndDateSelected">
+                                    </div>
+                                    <div class="col-sm">
+                                        <button type="button" class="btn w-100 bottom-margin-custom" ng-click="statsResetInputs()">Reset</button>
+                                        <button type="button" class="btn btn-danger w-100 bottom-margin-custom" ng-click="statsSubmitRequest()">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="collapse show" ng-hide="statsHeaders.length === 0">
+                                <div class="card-body table-customise">
+                                    <table class="table">
+                                        <thead class="thead-primary">
+                                        <tr align="center">
+                                            <th scope="col" ng-repeat="entry in statsHeaders">{{entry}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr align="center" ng-repeat="row in statsData">
+                                            <td ng-repeat="entry in row">{{entry}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="{{statsHeaders.length-1}}" class="total-row"><b>Total</b></td>
+                                            <td align="center" class="total-row"><b>{{statsTotal}}</b></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

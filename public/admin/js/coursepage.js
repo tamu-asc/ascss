@@ -63,6 +63,9 @@ homeApp.controller('CoursepageController', [
         $http.defaults.headers.common = {
             'Content-Type': "application/json"
         };
+
+        $scope.activeView = "student";
+
         $scope.user = {};
         $scope.studentUploadList = [];
         $scope.leaderUploadList = [];
@@ -70,6 +73,22 @@ homeApp.controller('CoursepageController', [
         $scope.course = {};
         $scope.students = [];
         $scope.leaders = [];
+
+        $scope.statsResetInputs = function () {
+            $scope.statsFilterTypes = [{"id":"session", "value":"# Session"}, {"id":"attendance", "value":"# Attendance"}];
+            $scope.statsFilterSelected = {"id":"attendance", "value":"# Attendance"};
+            $scope.statsGroupTypes = [{"id": "leader", "value": "Leader"}, {"id": "session", "value": "Session"}, {"id": "student", "value": "Student"}];
+            $scope.statsGroupSelected = {"id": "student", "value": "Student"};
+            $scope.statsUsername = "";
+            $scope.statsUsernameType = "Leader UIN";
+            $scope.statsAddress = "";
+            $scope.statsStartDateSelected = null;
+            $scope.statsEndDateSelected = null;
+        };
+        $scope.statsResetInputs();
+        $scope.statsData = [];
+        $scope.statsHeaders = [];
+        $scope.statsTotal = 0;
 
         $scope.logout = function () {
             $http({
@@ -85,6 +104,14 @@ homeApp.controller('CoursepageController', [
         $scope.home = function () {
             $window.location.href = "/admin";
         };
+
+        $scope.refreshView = function (hash) {
+            if (["student","leader","stats"].indexOf(hash) == -1)
+                hash = "student";
+            $window.location.hash = hash;
+            $scope.activeView = hash;
+        };
+        $scope.refreshView($window.location.hash.substr(1));
 
         const processCSV = function (data) {
             let parse = function (row){
@@ -202,8 +229,20 @@ homeApp.controller('CoursepageController', [
                 $scope.resetStudentInput();
                 $scope.$apply();
             }, function (err) {
-                $window.alert("Error Uploading students to course " + err.toLocaleString());
+                $window.alert("Error Uploading students to course " + err["data"]["msg"] + (err["data"]["details"] ? "\n"+err["data"]["details"] : ""));
             });
+        };
+
+        $scope.gotoStudent = function (student) {
+            $scope.statsFilterSelected = {"id":"attendance", "value":"# Attendance"};
+            $scope.statsSelectedFilter();
+            $scope.statsGroupSelected = {"id": "leader", "value": "Leader"};
+            $scope.statsSelectedGroup();
+            $scope.statsUsername = student.username;
+
+            $scope.refreshView("stats");
+
+            $scope.statsSubmitRequest();
         };
 
 
@@ -280,8 +319,111 @@ homeApp.controller('CoursepageController', [
                 $scope.resetLeaderInput();
                 $scope.$apply();
             }, function (err) {
-                $window.alert("Error Uploading leaders to course " + err.toLocaleString());
+                $window.alert("Error Uploading leaders to course " + err["data"]["msg"] + (err["data"]["details"] ? "\n"+err["data"]["details"] : ""));
             });
+        };
+        $scope.gotoLeader = function (leader) {
+            $scope.statsFilterSelected = {"id":"attendance", "value":"# Attendance"};
+            $scope.statsSelectedFilter();
+            $scope.statsGroupSelected = {"id": "session", "value": "Session"};
+            $scope.statsSelectedGroup();
+            $scope.statsUsername = leader.username;
+
+            $scope.refreshView("stats");
+
+            $scope.statsSubmitRequest();
+        };
+
+        /**
+         * Stats related functions
+         */
+        const statsChangeUsernameType = function (newUsernameType) {
+            if ($scope.statsUsernameType === newUsernameType)
+                return;
+            $scope.statsUsernameType = newUsernameType;
+            $scope.statsUsername = "";
+        };
+
+        const statsUpdateUsernameType = function () {
+            if ($scope.statsFilterSelected.id === "session") {
+                statsChangeUsernameType("");
+            } else if ($scope.statsGroupSelected.id === "leader") {
+                statsChangeUsernameType("Student UIN");
+            } else {
+                statsChangeUsernameType("Leader UIN");
+            }
+        };
+
+        $scope.statsSelectedFilter = function () {
+            if($scope.statsFilterSelected.id === "attendance") {
+                $scope.statsGroupTypes = [{"id": "leader", "value": "Leader"}, {"id": "session", "value": "Session"}, {"id": "student", "value": "Student"}];
+            } else {
+                $scope.statsGroupTypes = [{"id": "leader", "value": "Leader"}];
+                if ($scope.statsGroupSelected.id !== "leader") {
+                    $scope.statsGroupSelected = {"id": "leader", "value": "Leader"};
+                }
+            }
+            statsUpdateUsernameType();
+        };
+
+        $scope.statsSelectedGroup = function () {
+            statsUpdateUsernameType();
+        };
+
+        const getStatsSubmitData = function () {
+            let data = {
+                aggregate_by:$scope.statsGroupSelected.id,
+                filters:{}
+            };
+
+            if ($scope.statsAddress !== "") {
+                data.filters.address = $scope.statsAddress;
+            }
+
+            if ($scope.statsStartDateSelected) {
+                data.filters.start_time = $scope.statsStartDateSelected.getTime()/1000;
+            }
+
+            if ($scope.statsEndDateSelected) {
+                data.filters.end_time = $scope.statsEndDateSelected.getTime()/1000;
+            }
+
+            if ($scope.statsUsername !== "") {
+                data.filters[$scope.statsUsernameType.toLowerCase().startsWith("student") ? "student" : "leader"] = $scope.statsUsername;
+            }
+
+            return data;
+        };
+
+        const fillStats = function () {
+            const idx = $scope.statsHeaders.indexOf("count");
+            $scope.statsTotal = 0;
+
+            if (idx === -1) return;
+
+            $scope.statsHeaders[idx] = "Total " + $scope.statsFilterSelected.id
+
+            let total = 0;
+
+            for (let i in $scope.statsData) {
+                total += $scope.statsData[i][idx];
+            }
+
+            $scope.statsTotal = total;
+        };
+
+        $scope.statsSubmitRequest = function () {
+            $http({
+                method: "POST",
+                url: "/api/admin/course/" + $scope.courseId + "/" + $scope.statsFilterSelected.id + "_stats",
+                data: getStatsSubmitData()
+            }).then(function (resp) {
+                $scope.statsHeaders = resp["data"][0];
+                $scope.statsData = resp["data"].slice(1);
+                fillStats();
+            }, function (err) {
+                $window.alert("Error getting stats " + err["data"]["msg"] + (err["data"]["details"] ? "\n"+err["data"]["details"] : ""));
+            })
         };
 
         $http({

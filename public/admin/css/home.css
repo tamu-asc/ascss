@@ -40,3 +40,12 @@ button[type=submit]:disabled {
     cursor: not-allowed;
     pointer-events: all !important;
 }
+.text-offset-custom {
+    margin-left: 1mm;
+}
+.bottom-margin-custom {
+    margin-bottom: 3mm;
+}
+.total-row {
+    border:1pt solid black;
+}

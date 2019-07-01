@@ -18,9 +18,24 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
         course_instructor = CourseInstructor.find_by course: @course, username: value
         if course_instructor.nil?
           @msg = "Leader not found"
+          @details = "Leader value " + value
           render "objects/msg.json", status: :bad_request and return
         end
         aggregator = aggregator.where("sessions.course_instructor_id = %d"%course_instructor.id)
+      elsif key.to_s == "student"
+        course_student = CourseStudent.find_by course: @course, username: value
+        if course_student.nil?
+          @msg = "Student not found"
+          @details = "Student value " + value
+          render "objects/msg.json", status: :bad_request and return
+        end
+        aggregator = aggregator.where("course_student_id = %d"%course_student.id)
+      elsif key.to_s == "start_time"
+        aggregator = aggregator.where("sessions.start_time > ?", Time.at(value).to_datetime)
+      elsif key.to_s == "end_time"
+        aggregator = aggregator.where("sessions.start_time < ?", Time.at(value).to_datetime)
+      elsif key.to_s == "address"
+        aggregator = aggregator.where("sessions.address like '%%%s%%'", value)
       elsif key.to_s == "course"
         aggregator = aggregator.where("course_students.course_id = %d"%@course.id)
       end
@@ -39,22 +54,22 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
     body = []
 
     if aggregate_by.to_s == "session"
-      headers = ["Session Name", "count"]
+      headers = ["Session", "Address", "Instructor", "Date", "count"]
       aggregations.each do |k, v|
         session = Session.find_by_id(k.to_i)
-        body = body + [[session.name, v]]
+        body = body + [[session.name, session.address, session.course_instructor.username, session.start_time.strftime("%Y-%m-%d"), v]]
       end
     elsif aggregate_by.to_s == "student"
-      headers = ["username", "count"]
+      headers = ["Student Name", "UIN", "Email", "count"]
       aggregations.each do |k, v|
-        body = body + [[k, v]]
+        user1 = User.find_by_username(k)
+        body = body + [["%s %s"%[user1.first_name, user1.last_name], user1.username, user1.email, v]]
       end
-    elsif aggregate_by.to_s == "leader"
-      headers = ["Instructor Email", "count"]
+    else aggregate_by.to_s == "leader"
+      headers = ["Instructor Name", "UIN", "Email", "count"]
       aggregations.each do |k, v|
         course_instructor = CourseInstructor.find_by_id(k.to_i)
-        session = Session.find_by_id(k.to_i)
-        body = body + [["%s"%[course_instructor.user.email, course_instructor.user.last_name], v]]
+        body = body + [["%s %s"%[course_instructor.user.first_name, course_instructor.user.last_name], course_instructor.username, course_instructor.user.email, v]]
       end
     end
 
@@ -69,10 +84,10 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
       filename = "%s_%s_%i.csv"%[@course.code,aggregate_by,Time.now.to_i]
       send_data csv_data, :type => 'text/csv; charset=utf-8; header=present', :filename => filename
     else
-      @msg = [headers] + body
-      render "objects/msg.json", status: :ok
+      render json: ([headers] + body), status: :ok
     end
   end
+
 
   def aggregate_session
     aggregate_by = params[:aggregate_by]
@@ -90,9 +105,16 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
         course_instructor = CourseInstructor.find_by course: @course, username: value
         if course_instructor.nil?
           @msg = "Leader not found"
+          @details = "Leader value " + value
           render "objects/msg.json", status: :bad_request and return
         end
         aggregator = aggregator.where(course_instructor: course_instructor)
+      elsif key.to_s == "start_time"
+        aggregator = aggregator.where("sessions.start_time > ?", Time.at(value).to_datetime)
+      elsif key.to_s == "end_time"
+        aggregator = aggregator.where("sessions.start_time < ?", Time.at(value).to_datetime)
+      elsif key.to_s == "address"
+        aggregator = aggregator.where("sessions.address like '%%%s%%'", value)
       elsif key.to_s == "course"
         aggregator = aggregator.where("course_instructors.course_id = %d"%@course.id)
       end
@@ -109,18 +131,17 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
     body = []
 
     if aggregate_by.to_s == "session"
-      headers = ["Session Name", "count"]
+      headers = ["Session", "Address", "Instructor", "Date", "count"]
       aggregations.each do |k, v|
         session = Session.find_by_id(k.to_i)
-        body = body + [[session.name, v]]
+        body = body + [[session.name, session.address, session.course_instructor.username, session.start_time.strftime("%Y-%m-%d"), v]]
       end
-    elsif aggregate_by.to_s == "leader"
-      headers = ["Instructor Email", "count"]
-      aggregations.each do |k, v|
-        course_instructor = CourseInstructor.find_by_id(k.to_i)
-        session = Session.find_by_id(k.to_i)
-        body = body + [["%s"%[course_instructor.user.email, course_instructor.user.last_name], v]]
-      end
+    else aggregate_by.to_s == "leader"
+    headers = ["Instructor Name", "UIN", "Email", "count"]
+    aggregations.each do |k, v|
+      course_instructor = CourseInstructor.find_by_id(k.to_i)
+      body = body + [["%s %s"%[course_instructor.user.first_name, course_instructor.user.last_name], course_instructor.username, course_instructor.user.email, v]]
+    end
     end
 
     accept = request.headers["Accept"]
@@ -134,8 +155,7 @@ class Api::Admin::AggregationsController < Api::Admin::AuthController
       filename = "%s_%s_%i.csv"%[@course.code,aggregate_by,Time.now.to_i]
       send_data csv_data, :type => 'text/csv; charset=utf-8; header=present', :filename => filename
     else
-      @msg = [headers] + body
-      render "objects/msg.json", status: :ok
+      render json: ([headers] + body), status: :ok
     end
   end
 end
