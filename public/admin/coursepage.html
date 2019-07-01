@@ -256,7 +256,7 @@
                             </form>
                             <div class="collapse show" ng-hide="statsHeaders.length === 0">
                                 <div class="card-body table-customise">
-                                    <table class="table">
+                                    <table class="table table-striped">
                                         <thead class="thead-primary">
                                         <tr align="center">
                                             <th scope="col" ng-repeat="entry in statsHeaders">{{entry}}</th>
@@ -266,11 +266,13 @@
                                         <tr align="center" ng-repeat="row in statsData">
                                             <td ng-repeat="entry in row">{{entry}}</td>
                                         </tr>
+                                        </tbody>
+                                        <tfoot>
                                         <tr>
                                             <td colspan="{{statsHeaders.length-1}}" class="total-row"><b>Total</b></td>
                                             <td align="center" class="total-row"><b>{{statsTotal}}</b></td>
                                         </tr>
-                                        </tbody>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
