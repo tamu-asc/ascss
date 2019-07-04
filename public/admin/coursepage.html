@@ -259,7 +259,14 @@
                                     <table class="table table-striped">
                                         <thead class="thead-primary">
                                         <tr align="center">
-                                            <th scope="col" ng-repeat="entry in statsHeaders">{{entry}}</th>
+                                            <th scope="col" ng-repeat="entry in statsHeaders">
+                                                <a ng-click="statsSortBy(entry)">{{entry}}
+                                                    <span ng-show="statsOrderByField == entry">
+                                                        <span ng-show="!statsReverseSort">^</span>
+                                                        <span ng-show="statsReverseSort">v</span>
+                                                    </span>
+                                                </a>
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>

@@ -89,6 +89,8 @@ homeApp.controller('CoursepageController', [
         $scope.statsData = [];
         $scope.statsHeaders = [];
         $scope.statsTotal = 0;
+        $scope.statsReverseSort = false;
+        $scope.statsOrderByField = null;
 
         $scope.logout = function () {
             $http({
@@ -106,7 +108,7 @@ homeApp.controller('CoursepageController', [
         };
 
         $scope.refreshView = function (hash) {
-            if (["student","leader","stats"].indexOf(hash) == -1)
+            if (["student","leader","stats"].indexOf(hash) === -1)
                 hash = "student";
             $window.location.hash = hash;
             $scope.activeView = hash;
@@ -122,7 +124,7 @@ homeApp.controller('CoursepageController', [
                     if(character === '"') {
                         insideQuote = !insideQuote;
                     } else {
-                        if(character == "," && !insideQuote) {
+                        if(character === "," && !insideQuote) {
                             entries.push(entry.join(''));
                             entry = [];
                         } else {
@@ -189,7 +191,7 @@ homeApp.controller('CoursepageController', [
         const addStudentsToListUtil = function (vals) {
             for (i in vals) {
                 const val = vals[i];
-                if ($scope.studentUploadList.indexOf(val) == -1) {
+                if ($scope.studentUploadList.indexOf(val) === -1) {
                     $scope.studentUploadList.push(val);
                 }
             }
@@ -279,7 +281,7 @@ homeApp.controller('CoursepageController', [
         const addLeadersToListUtil = function (vals) {
             for (i in vals) {
                 const val = vals[i];
-                if ($scope.leaderUploadList.indexOf(val) == -1) {
+                if ($scope.leaderUploadList.indexOf(val) === -1) {
                     $scope.leaderUploadList.push(val);
                 }
             }
@@ -370,6 +372,37 @@ homeApp.controller('CoursepageController', [
             statsUpdateUsernameType();
         };
 
+        const getComparator = function (idx, reverse) {
+            return function (a, b) {
+                var i = 1;
+                if (reverse) {
+                    i = -1;
+                }
+                if (a[idx] > b[idx]) return 1*i;
+                else if (a[idx] < b[idx]) return -1*i;
+                return 0;
+            }
+        };
+
+        const arrangeDataAccordingToSort = function () {
+            let idx = $scope.statsHeaders.indexOf($scope.statsOrderByField);
+            if (idx === -1) {
+                return;
+            }
+
+            $scope.statsData.sort(getComparator(idx, $scope.statsReverseSort));
+        };
+
+        $scope.statsSortBy = function (field) {
+            if ($scope.statsOrderByField === field) {
+                $scope.statsReverseSort = !$scope.statsReverseSort;
+            } else {
+                $scope.statsOrderByField = field;
+                $scope.statsReverseSort = false;
+            }
+            arrangeDataAccordingToSort();
+        };
+
         const getStatsSubmitData = function () {
             let data = {
                 aggregate_by:$scope.statsGroupSelected.id,
@@ -401,7 +434,7 @@ homeApp.controller('CoursepageController', [
 
             if (idx === -1) return;
 
-            $scope.statsHeaders[idx] = "Total " + $scope.statsFilterSelected.id
+            $scope.statsHeaders[idx] = "Total " + $scope.statsFilterSelected.id;
 
             let total = 0;
 
@@ -410,6 +443,9 @@ homeApp.controller('CoursepageController', [
             }
 
             $scope.statsTotal = total;
+
+            $scope.statsOrderByField = null;
+            $scope.statsReverseSort = false;
         };
 
         $scope.statsSubmitRequest = function () {
