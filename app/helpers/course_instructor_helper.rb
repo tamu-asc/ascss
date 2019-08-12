@@ -1,7 +1,9 @@
 module CourseInstructorHelper
 
   def show_course_instructor
-    @course_instructors = CourseInstructor.where user: @user
+    @course_instructors = CourseInstructor.joins(:course)
+    @course_instructors = @course_instructors.where(user: @user)
+    @course_instructors = @course_instructors.where("courses.active = true")
     if @course_instructors
       render "objects/course_instructor"
     else

@@ -28,7 +28,7 @@ class Api::Admin::CourseStudentController < Api::Admin::AuthController
       render "objects/msg.json", status: :bad_request and return
     end
     @course_students = params[:users].map do |user|
-      create_entry course, user[:usernames]
+      create_entry course, user[:username]
     end
     if @course_students
       render 'objects/course_student.json'

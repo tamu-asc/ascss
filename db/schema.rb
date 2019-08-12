@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_222531) do
+ActiveRecord::Schema.define(version: 2019_06_16_101256) do
 
   create_table "course_instructors", force: :cascade do |t|
     t.string "username"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_222531) do
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true
   end
 
   create_table "sections", force: :cascade do |t|
@@ -56,8 +57,8 @@ ActiveRecord::Schema.define(version: 2019_04_16_222531) do
     t.datetime "in_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_session_attendances_on_session_id"
     t.index ["course_student_id"], name: "index_session_attendances_on_course_student_id"
+    t.index ["session_id"], name: "index_session_attendances_on_session_id"
   end
 
   create_table "sessions", force: :cascade do |t|

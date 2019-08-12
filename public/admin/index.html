@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Admin site">
+    <title>Academic Success Center</title>
+
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!--<link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">-->
+    <link href="/css/mdb.min.css" rel="stylesheet">
+    <link href="/admin/css/home.css" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script type="application/javascript" src="/js/jquery.form.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/admin/js/home.js"></script>
+
+
+</head>
+<body ng-app="homeApp">
+<div ng-controller="HomeController">
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark black">
+        <a href="#" class="navbar-branc"><img src="/images/ASC logo_horizontal_standard_RGB.png" style="max-height: 50px" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
+                aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-cog text-primary"></i> Profile </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-info"
+                         aria-labelledby="navbarDropdownMenuLink-4">
+                        <a class="dropdown-item text-primary" ng-click="logout()" id="logout">Log out</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="CreateModalTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CreateModalTitle">Create New Course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form name="courseForm" ng-submit="createNewCourse(course)" novalidate>
+
+                        <div class="form-group">
+                            <label for="Course-Code" class="col-form-label ">Course Code:</label>
+                            <input class="form-control form-control-lg create_course_code" type="text" name="code" ng-model="course.code" required>
+                            <!--<p ng-show="courseForm.code.$invalid && !courseForm.code.$pristine" class="help-block">You name is required.</p>-->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Course-Name" class="col-form-label ">Course Name:</label>
+                            <input class="form-control form-control-lg create_course_name" type="text" ng-model="course.title" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Semester" class="control-label">Semester: </label><br>
+                            <select class="form-control" ng-model="course.semester" required>
+                                <option value="spring">Spring</option>
+                                <option value="summer">Summer</option>
+                                <option value="fall" selected="selected">Fall</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Year" class="col-form-label">Year: </label>
+                            <select class="form-control" ng-model="course.year" required>
+                                <option value=2019 selected="selected">2019</option>
+                                <option value=2020>2020</option>
+                                <option value=2021>2021</option>
+                                <option value=2022>2022</option>
+                                <option value=2023>2023</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Credits" class="col-form-label">Credits: </label>
+                            <select class="form-control" ng-model="course.credits" required>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3 selected="selected">3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                                <option value=10>10</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary create_session" data-toggle="modal"
+                                    data-target="#CreateModal" ng-disabled="courseForm.$invalid">Create</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="coursecont" class="container">
+        <div class="accordion" id="course_section_id">
+            <div class="card">
+                <h1 class="text-center">Admin Site</h1>
+                <h2><button type="button" class="blue-button btn btn-link btn-sm pull-right float-right" data-toggle="modal"
+                            data-target="#CreateModal">+ Create New Course
+                </button></h2>
+
+                <button type="button" class="btn btn-dark btn-lg btn-block">All Courses</button>
+
+                <div id="courses_div_id" class="collapse show" aria-labelledby="Courseheading1"
+                     data-parent="#course_section_id">
+                    <div class="card-body table-customise" id="CourseCard">
+                        <table id="course_table_id" class="table">
+                            <thead id="course_table_head_id" class="thead-primary">
+                            <tr align="center">
+                                <th scope="col">ID</th>
+                                <th scope="col">CODE</th>
+                                <th scope="col">TITLE</th>
+                                <th scope="col">SEMESTER</th>
+                                <th scope="col">YEAR</th>
+                                <th scope="col">CREDITS</th>
+                                <th scope="col">ACTIVE</th>
+                            </tr>
+                            <tr align="center" ng-repeat="course in displayCourses">
+                                <td><button class="btn btn-primary btn-sm" type="button" ng-click="gotoCourse(course)">{{course.id}}</button></td>
+                                <td>{{course.code}}</td>
+                                <td>{{course.title}}</td>
+                                <td>{{course.semester}}</td>
+                                <td>{{course.year}}</td>
+                                <td>{{course.credits}}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" ng-model="course.active" ng-change="saveActiveState(course)">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody id="CoursesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-header" id="show_inactive_id">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" id="show_inactive_button_id" type="button" ng-click="toggleShowActive()">{{showInactive === false ? 'View' : 'Hide'}} Inactive Courses
+                        </button>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

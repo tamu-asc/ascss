@@ -5,6 +5,7 @@ def course_format(json, course)
   json.year course.year
   json.credits course.credits
   json.code course.code
+  json.active course.active
 end
 
 if @course != nil

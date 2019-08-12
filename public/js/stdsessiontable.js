@@ -116,12 +116,16 @@ $(document).ready(function() {
                         endtime=endtime.toLocaleString();
 
 
-                         $('#StdSessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
+                        let leader_name = sessionn.leader.first_name + sessionn.leader.last_name;
+                        if (leader_name == "") {
+                            leader_name = sessionn.leader.username;
+                        }
+                        $('#StdSessionPageBody').append($('<tr class="entry-hover-class" align="center" onclick="popfn(\''+sessionn.id+'\')">')
                             .append($session_name)
                             .append($("<td>").append(starttime))
                             .append($("<td>").append(endtime))
                             .append($("<td>").append(sessionn.address))
-                            .append($("<td>").append(sessionn.leader.first_name + sessionn.leader.last_name))
+                            .append($("<td>").append(leader_name))
                             .append($mark_attendance_object)                      );
                             $('#StdSessionPageBody').append($('<tr>')
                             .append($('<td colspan="100%" class= "bevisible" style="display:none;font-style:italic" id="description'+sessionn.id+'" >').append(sessionn.description))

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Admin site">
+    <title>Academic Success Center</title>
+
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!--<link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">-->
+    <link href="/css/mdb.min.css" rel="stylesheet">
+    <link href="/admin/css/home.css" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js"></script>
+    <script type="application/javascript" src="/js/jquery.form.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/admin/js/coursepage.js"></script>
+
+
+</head>
+<body ng-app="homeApp">
+<div ng-controller="CoursepageController">
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark black">
+        <a href="#" class="navbar-branc"><img src="/images/ASC logo_horizontal_standard_RGB.png" style="max-height: 50px" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
+                aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" ng-click="home()">Back to Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-cog text-primary"></i> Profile </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-info"
+                         aria-labelledby="navbarDropdownMenuLink-4">
+                        <a class="dropdown-item text-primary" ng-click="logout()" id="logout">Log out</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-center">{{course.code}}: {{course.title}}</h1>
+
+    <div class="modal fade" id="AddStudents" tabindex="-1" role="dialog" aria-labelledby="AddStudentsTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CreateModalTitle">Add Students To Course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form name="studentForm" novalidate>
+
+                        <div class="form-group">
+                            <label for="Student-Username" class="col-form-label ">Username: (press enter to add to list)</label>
+                            <input class="form-control create_course_code" type="text" name="code" ng-enter-key="addStudentToList()" ng-model="student.username" required>
+                        </div>
+                        <div>
+                            <label for="Student-Bulk-Usernames" class="col-form-label ">Or Upload a CSV:</label><br/>
+                            <input type="file" accept=".csv" id="studentCSVFile" file-model="studentFile"/>
+                            <button class="float-right" ng-click="uploadStudentsFile()">Add to List</button>
+                        </div>
+                        <hr/>
+
+                        <div>
+                            <label for="Student-Usernames-List" class="col-form-label "><b>Usernames to be added:</b></label>
+                            <div ng-repeat="student in studentUploadList">
+                                {{student}}
+                            </div>
+                        </div>
+
+                        <div class="float-right modal-footear">
+                            <button type="submit" class="btn btn-primary create_session" data-toggle="modal"
+                                    data-target="#AddStudents" ng-disabled="!studentUploadList.length" ng-click="addStudentsToCourse()">Upload</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AddLeaders" tabindex="-1" role="dialog" aria-labelledby="AddLeadersTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CreateModalTitle">Add Leaders To Course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form name="leaderForm" novalidate>
+
+                        <div class="form-group">
+                            <label for="Leader-Username" class="col-form-label ">Username: (press enter to add to list)</label>
+                            <input class="form-control create_course_code" type="text" name="code" ng-enter-key="addLeaderToList()" ng-model="leader.username" required>
+                        </div>
+                        <div>
+                            <label for="Leader-Bulk-Usernames" class="col-form-label ">Or Upload a CSV:</label><br/>
+                            <input type="file" accept=".csv" id="leaderCSVFile" file-model="leaderFile"/>
+                            <button class="float-right" ng-click="uploadLeadersFile()">Add to List</button>
+                        </div>
+                        <hr/>
+
+                        <div>
+                            <label for="Leader-Usernames-List" class="col-form-label "><b>Usernames to be added:</b></label>
+                            <div ng-repeat="leader in leaderUploadList">
+                                {{leader}}
+                            </div>
+                        </div>
+
+                        <div class="float-right modal-footear">
+                            <button type="submit" class="btn btn-primary create_session" data-toggle="modal"
+                                    data-target="#AddLeaders" ng-disabled="!leaderUploadList.length" ng-click="addLeadersToCourse()">Upload</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="coursecont" class="container">
+        <div class="accordion" id="course_section_id">
+            <div class="card">
+
+                <div class="nav-scroller bg-white box-shadow">
+                    <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
+                        <li class="nav-item width-33-per">
+                            <a class="nav-link" ng-class="{active: activeView=='student'}" ng-click="refreshView('student')" id="pills-student-tab" data-toggle="pill" href="#student"
+                               role="tab"
+                               aria-controls="pills-student" aria-selected="true">Students</a>
+                        </li>
+                        <li class="nav-item width-33-per">
+                            <a class="nav-link" ng-class="{active: activeView=='leader'}" ng-click="refreshView('leader')" id="pills-leader-tab" data-toggle="pill" href="#leader"
+                               role="tab"
+                               aria-controls="pills-leader" aria-selected="false">Leaders</a>
+                        </li>
+                        <li class="nav-item width-33-per">
+                            <a class="nav-link" ng-class="{active: activeView=='stats'}" ng-click="refreshView('stats')" id="pills-statistics-tab" data-toggle="pill" href="#stats"
+                               role="tab"
+                               aria-controls="pills-statistics" aria-selected="false">Statistics</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr/>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade" ng-class="{'active show': activeView=='student'}" id="pills-student" role="tabpanel" aria-labelledby="student-tab">
+                        <h2><button type="button" class="blue-button btn btn-link btn-sm pull-right float-right" data-toggle="modal"
+                                    ng-click="resetStudentInput()" data-target="#AddStudents">+ Add Students
+                        </button></h2>
+                        <button type="button" class="btn btn-dark btn-lg btn-block">Enrolled Students</button>
+                        <div id="students_div_id" class="collapse show" aria-labelledby="Studentheading1"
+                             data-parent="#student_section_id">
+                            <div class="card-body table-customise" id="StudentCard">
+                                <table id="student_table_id" class="table">
+                                    <thead id="student_table_head_id" class="thead-primary">
+                                    <tr align="center">
+                                        <th scope="col">USERNAME</th>
+                                        <th scope="col">NAME</th>
+                                        <th scope="col">EMAIL</th>
+                                        <th scope="col">ACTION</th>
+                                    </tr>
+                                    <tr align="center" ng-repeat="student in students">
+                                        <td>{{student.username}}</td>
+                                        <td>{{student.first_name}} {{student.last_name}}</td>
+                                        <td>{{student.email}}</td>
+                                        <td><button class="btn btn-primary btn-sm" type="button" ng-click="gotoStudent(student)">See Stats</button></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="StudentsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" ng-class="{'active show': activeView=='leader'}" id="pills-leader" role="tabpanel" aria-labelledby="leader-tab">
+                        <h2><button type="button" class="blue-button btn btn-link btn-sm pull-right float-right" data-toggle="modal"
+                                    ng-click="resetLeaderInput()" data-target="#AddLeaders">+ Add Leaders
+                        </button></h2>
+                        <button type="button" class="btn btn-dark btn-lg btn-block">Enrolled Leaders</button>
+                        <div id="leaders_div_id" class="collapse show" aria-labelledby="Leaderheading1"
+                             data-parent="#leader_section_id">
+                            <div class="card-body table-customise" id="LeaderCard">
+                                <table id="leader_table_id" class="table">
+                                    <thead id="leader_table_head_id" class="thead-primary">
+                                    <tr align="center">
+                                        <th scope="col">USERNAME</th>
+                                        <th scope="col">NAME</th>
+                                        <th scope="col">EMAIL</th>
+                                        <th scope="col">ACTION</th>
+                                    </tr>
+                                    <tr align="center" ng-repeat="leader in leaders">
+                                        <td>{{leader.username}}</td>
+                                        <td>{{leader.first_name}} {{leader.last_name}}</td>
+                                        <td>{{leader.email}}</td>
+                                        <td><button class="btn btn-primary btn-sm" type="button" ng-click="gotoLeader(leader)">See Stats</button></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" ng-class="{'active show': activeView=='stats'}" id="pills-statistics" role="tabpanel" aria-labelledby="statistics-tab">
+                        <div class="container">
+                            <form action="#" method="post" novalidate="novalidate">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Filter Type<span style="color: red; ">*</span></label>
+                                        <select class="form-control search-slt" ng-model="statsFilterSelected" ng-options="option.value for option in statsFilterTypes track by option.id" ng-change="statsSelectedFilter()">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Grouping<span style="color: red; ">*</span></label>
+                                        <select class="form-control search-slt" ng-model="statsGroupSelected" ng-options="option.value for option in statsGroupTypes track by option.id" ng-change="statsSelectedGroup()">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm" ng-hide="statsUsernameType === ''">
+                                        <label class="col-form-label text-left text-offset-custom w-100">{{statsUsernameType}}</label>
+                                        <input type="text" class="form-control search-slt" ng-model="statsUsername">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Address</label>
+                                        <input type="text" class="form-control search-slt" ng-model="statsAddress">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">Start Date</label>
+                                        <input type="date" class="form-control search-slt" ng-model="statsStartDateSelected">
+                                    </div>
+                                    <div class="col-sm">
+                                        <label class="col-form-label text-left text-offset-custom w-100">End Date</label>
+                                        <input type="date" class="form-control search-slt" ng-model="statsEndDateSelected">
+                                    </div>
+                                    <div class="col-sm">
+                                        <button type="button" class="btn w-100 bottom-margin-custom" ng-click="statsResetInputs()">Reset</button>
+                                        <button type="button" class="btn btn-danger w-100 bottom-margin-custom" ng-click="statsSubmitRequest()">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="collapse show" ng-hide="statsHeaders.length === 0">
+                                <div class="card-body table-customise">
+                                    <table class="table table-striped">
+                                        <thead class="thead-primary">
+                                        <tr align="center">
+                                            <th scope="col" ng-repeat="entry in statsHeaders">
+                                                <a ng-click="statsSortBy(entry)">{{entry}}
+                                                    <span ng-show="statsOrderByField == entry">
+                                                        <span ng-show="!statsReverseSort">^</span>
+                                                        <span ng-show="statsReverseSort">v</span>
+                                                    </span>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr align="center" ng-repeat="row in statsData">
+                                            <td ng-repeat="entry in row">{{entry}}</td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="{{statsHeaders.length-1}}" class="total-row"><b>Total</b></td>
+                                            <td align="center" class="total-row"><b>{{statsTotal}}</b></td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

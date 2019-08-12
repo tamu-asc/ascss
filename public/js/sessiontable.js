@@ -4,6 +4,7 @@ var curr_course;
 var repeat_session=0;
 var startTime = 1558297380;
 var endTIme =  1558300980;
+var username_list = [];
 
   $(function () {
     $('#starttimeid').datetimepicker();
@@ -62,6 +63,20 @@ $('#endtimeid').val(endstring);
 
 }
 
+function attendancefn(sessionn_id) {
+    curr_session = sessionn_id;
+    username_list = [];
+    update_attendance_username_list();
+}
+
+function update_attendance_username_list() {
+    document.getElementById("attn_username_id").value = "";
+    var username_list_str = "";
+    for(var i in username_list) {
+        username_list_str += (username_list[i] + "<br>");
+    }
+    document.getElementById("attn_username_list_id").innerHTML = username_list_str;
+}
 
 function endfn(session_id) {
     $.ajax({
@@ -107,6 +122,40 @@ $(document).ready(function() {
     });
     return this;
     };
+
+    $('.update_attendacne').click(function () {
+        var obj = {
+            usernames: username_list
+        };
+        $.ajax({
+            url: '/api/leader/course/' + curr_course + '/session/' + curr_session + '/mark_attendance',
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(obj),
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
+                location.reload()
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Error occured while performing the Operation', errorThrown);
+                console.log('Error in Operation',errorThrown);
+            }
+        });
+    });
+
+    $('.add_user_name_attn').on('keypress', function (e) {
+        if (e.which == 13) {
+            let username = document.getElementById("attn_username_id").value;
+            username = username.trim();
+            if (username != "" && username_list.indexOf(username) == -1) {
+                username_list.push(username);
+            } else {
+                alert("Blank or duplicate entry");
+            }
+            update_attendance_username_list();
+            return false;
+        }
+    });
 
 
     $('.delete_session').click(function() {
@@ -335,8 +384,7 @@ $(document).ready(function() {
                     sessions = data.sessions;
                                 $('#coursetitle').append($('<h1>'+coursename+'</h1>'))
                             $(data.sessions).each(function(i,sessionn){
-                        var $edit_object;
-                        var $end_object;
+                        var $action_object;
                         var $session_name;
 
 
@@ -344,19 +392,16 @@ $(document).ready(function() {
         $session_name='<td>'+sessionn.name;
                         if(sessionn.state=="active")
                         {
-                        $edit_object='<td><button style="cursor: not-allowed" disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm"  type="button">Edit</button></td>';
-                        $end_object='<td><button id="endbutton'+sessionn.id+'" onclick="endfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">End</button>';                            }
-
+                            $action_object='<td><button id="endbutton'+sessionn.id+'" onclick="endfn(\''+sessionn.id+'\')" class="btn btn-danger btn-sm" type="button">End Session</button>';
+                        }
                         if(sessionn.state=="past")
                         {
-                        $edit_object='<td><button style="cursor: not-allowed" disabled id="editbutton'+sessionn.id+'"class="btn btn-primary btn-sm"  type="button">Edit</button></td>';
-                        $end_object='<td><button style="cursor: not-allowed" disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
+                            $action_object='<td><button id="attendancebutton'+sessionn.id+'" onclick="attendancefn(\''+sessionn.id+'\')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#AttendanceModal" type="button">Add Attendance</button>';
                         }
 
                         if(sessionn.state=="future")
                         {
-                          $edit_object='<td><button id="editbutton'+sessionn.id+'" onclick="editfn(\''+sessionn.id+'\')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#EditModal" type="button">Edit</button>';
-                          $end_object='<td><button style="cursor: not-allowed" disabled id="endbutton'+sessionn.id+'"class="btn btn-danger btn-sm" type="button">End</button></td>';
+                            $action_object='<td><button id="editbutton'+sessionn.id+'" onclick="editfn(\''+sessionn.id+'\')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#EditModal" type="button">Edit Session</button>';
                         }
 
 
@@ -377,13 +422,12 @@ $(document).ready(function() {
                         endtime=endtime.toLocaleString();
 
 
-                         $('#SISessionPageBody').append($('<tr onclick="popfn(\''+sessionn.id+'\')">')
+                         $('#SISessionPageBody').append($('<tr class="entry-hover-class" align="center" onclick="popfn(\''+sessionn.id+'\')">')
                             .append($session_name)
                             .append($("<td>").append(starttime))
                             .append($("<td>").append(endtime))
                             .append($("<td>").append(sessionn.address))
-                            .append($edit_object)
-                            .append($end_object)                      );
+                            .append($action_object)                      );
                             $('#SISessionPageBody').append($('<tr>')
                             .append($('<td colspan="100%" class= "bevisible" style="display:none;font-style:italic" id="description'+sessionn.id+'" >').append(sessionn.description))
                                                           );

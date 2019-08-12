@@ -1,0 +1,51 @@
+.pad-15{
+    padding: 15px;
+}
+.btn.btn-sm {
+    padding: .25rem 1.5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}
+
+.btn {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    margin: 0rem;
+    border: 0;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+}
+.form-control:disabled, .form-control[readonly] {
+    background-color: white;
+    opacity: 1;
+}
+.entry-hover-class:hover {
+    cursor: pointer;
+}
+.blue-button {
+    color: blue!important;
+}
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
+button[type=submit]:disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+.text-offset-custom {
+    margin-left: 1mm;
+}
+.bottom-margin-custom {
+    margin-bottom: 3mm;
+}
+.total-row {
+    border:1pt solid black;
+}

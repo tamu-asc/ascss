@@ -18,7 +18,12 @@ $(document).ready(function () {
 
         $.post("/api/login", JSON.stringify(loginCreds), function (data) {
             localStorage.setItem("login", "TRUE");
-            window.location.assign('/home')
+            localStorage.setItem("role", data.user.role);
+            if (data.user.role == "admin") {
+                window.location.assign('/admin');
+            } else {
+                window.location.assign('/home')
+            }
         }).fail(function(err) {console.log(err); alert('Error occured! Check username and password. ')});
     });
 });

@@ -2,7 +2,14 @@ class Api::Admin::CourseController < Api::Admin::AuthController
   include CoursesHelper
 
   def index
-    @courses = Course.all
+    inactive = params[:inactive].to_i
+    if inactive == 1 # only active courses
+      @courses = Course.where active: false
+    elsif inactive == 2
+      @courses = Course.where active: true
+    else
+      @courses = Course.all
+    end
     render 'objects/course.json'
   end
 
